@@ -3,12 +3,13 @@
   <head>
     <title>Apen Race</title>
     <link rel="stylesheet" type="text/css" href="public/style.css">
-    <link rel="icon" type="image/x-icon" href="images/Apen Race.ico">
+    <link rel="icon" type="image/x-icon" href="public/images/Apen Race.ico">
     <style>
       body {
-        background-image: url("/images/sky.pixil.png");
+        background-image: url("public/images/sky.pixil.png");
         background-repeat: no-repeat;
         background-size: cover;
+        height: 100vh;
 }
     </style>
   </head>
@@ -26,11 +27,36 @@
       var form = document.getElementById('form');
       var input = document.getElementById('input');
     
+      // Function to reset the chat to visible
+      function resetChatVisibility() {
+        var chat = document.querySelector('.chat');
+        chat.classList.remove('inactive');
+      }
+    
+      // Function to start the timeout and hide the chat after 5 seconds of inactivity
+      function startChatTimeout() {
+        timeout = setTimeout(function() {
+          var chat = document.querySelector('.chat');
+          chat.classList.add('inactive');
+        }, 7500); // 5000 milliseconds (5 seconds)
+      }
+    
+      // Event listeners for mouse events on the chat div
+      var chatDiv = document.querySelector('.chat');
+      chatDiv.addEventListener('mouseover', resetChatVisibility);
+      chatDiv.addEventListener('mouseout', startChatTimeout);
+    
+      // Initialize the timeout when the page loads
+      startChatTimeout();
+    
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value) {
+          clearTimeout(timeout); // Clear the timeout
+          resetChatVisibility(); // Reset chat visibility
           socket.emit('chat message', input.value);
           input.value = '';
+          startChatTimeout(); // Restart the timeout
         }
       });
     
