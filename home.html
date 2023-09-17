@@ -3,21 +3,32 @@
   <head>
     <title>Apen Race</title>
     <link rel="stylesheet" type="text/css" href="public/style.css">
+    <link rel="stylesheet" type="text/css" href="/src/client/style.css" />
     <link rel="icon" type="image/x-icon" href="public/images/Apen Race.ico">
     <style>
       body {
-        background-image: url("public/images/sky.pixil.png");
         background-repeat: no-repeat;
         background-size: cover;
+        background-image: url("/public/images/pixil-gif-drawing.gif");  
         height: 100vh;
 }
     </style>
+    
   </head>
   <body>
+    <!-- Buttons for game -->
+    <div class="buttons">
+    <a href="#"><button class="button-background"><b>Play</b></button></a>
+    <a href="#"><button class="button-background"><b>Settings</b></button></a>
+    <a href="#"><button class="button-background"><b>Leaderboard</b></button></a>
+    <a><button class="logout-button button-background" ><b>Logout</b></button></a>
+    </div>
+    
+    <!-- Chat -->
     <div class="chat" id="chat">
     <ul id="messages"></ul>
     <form id="form" action="">
-      <input id="input" autocomplete="off" maxlength="255" />
+      <input id="input" autocomplete="off" maxlength="255" placeholder="Type here to chat . . ." />
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -38,7 +49,7 @@
         timeout = setTimeout(function() {
           var chat = document.querySelector('.chat');
           chat.classList.add('inactive');
-        }, 7500); // 5000 milliseconds (5 seconds)
+        }, 7500); // 7500 milliseconds (7.5 seconds)
       }
     
       // Event listeners for mouse events on the chat div
@@ -61,12 +72,38 @@
       });
     
       socket.on('chat message', function(msg) {
-        var item = document.createElement('li');
-        item.textContent = msg;
-        messages.appendChild(item);
-        const out = document.getElementById("chat")
-        out.scrollTop = out.scrollHeight - out.clientHeight
-      });
+  var item = document.createElement('li');
+  item.textContent = msg;
+  messages.appendChild(item);
+  const out = document.getElementById("chat");
+  out.scrollTop = out.scrollHeight - out.clientHeight;
+});
+
+// logout
+document.addEventListener("DOMContentLoaded", () => {
+  
+  // Add an event listener for the logout button
+  document.querySelector(".logout-button").addEventListener("click", () => {
+    // Perform AJAX/Fetch request to log out
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/logout"); // Create a new route for logout if needed
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          // Redirect the user to the login page after successful logout
+          window.location.href = '/';
+        } else {
+          // Handle logout error (if any)
+          console.error("Logout error:", xhr.status, xhr.responseText);
+        }
+      }
+    };
+
+    xhr.send();
+  });
+});
     </script>
     
     </div>

@@ -88,5 +88,66 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-        // perform ajax/fetch register
-        
+document.querySelector("#createAccount").addEventListener("submit", (e) => {
+    e.preventDefault();
+  
+    // Get input values
+    const username = document.getElementById("signupUsername").value;
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+  
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setFormMessage(
+        document.querySelector("#createAccount"),
+        "error",
+        "Passwords do not match."
+      );
+      return;
+    }
+  
+    // Create an object to send as JSON
+    const data = {
+      username: username,
+      email: email,
+      password: password,
+    };
+  
+    // Perform AJAX/Fetch registration
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/register"); // Change the endpoint to /register
+    // Set the request header for JSON data
+    xhr.setRequestHeader("Content-Type", "application/json");
+  
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        console.log(xhr.status);
+        console.log(xhr.responseText);
+  
+        // Parse the response JSON
+        const response = JSON.parse(xhr.responseText);
+  
+        if (xhr.status === 200 && response.success === "success") {
+          // Redirect the user to the home page
+          window.location.href = "/home"; // Change this URL to your desired redirection URL
+        } else if (xhr.status === 200 && response.error === "user-exists") {
+          // Display an error message for existing user
+          setFormMessage(
+            document.querySelector("#createAccount"),
+            "error",
+            "Username or email already exists."
+          );
+        } else {
+          // Handle other registration errors
+          setFormMessage(
+            document.querySelector("#createAccount"),
+            "error",
+            "Registration failed."
+          );
+        }
+      }
+    };
+  
+    xhr.send(JSON.stringify(data));
+  });
