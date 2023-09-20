@@ -6,6 +6,7 @@ const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const port = process.env.PORT || 3000;
+const { joinWaitingRoom, handleDisconnect } = require('./controllers/waitingRoomController'); // Import the waiting room controller
 
 // Create a session store using express-session
 const sessionMiddleware = session({
@@ -58,17 +59,32 @@ io.use((socket, next) => {
   sessionMiddleware(socket.request, {}, next);
 });
 
-io.on("connection", (socket) => {
-  socket.on("chat message", (msg) => {
+io.on('connection', (socket) => {
+  // Handle a user joining the waiting room
+  socket.on('joinWaitingRoom', () => {
+    joinWaitingRoom(socket, io);
+  });
+
+  // Handle user disconnections
+  socket.on('disconnecting', () => {
+    handleDisconnect(socket, io);
+  });
+
+  // Handle user leaving queue
+  socket.on('disconnectFromQueue', () => {
+    handleDisconnect(socket, io);
+  });
+
+  // Handle chat messages
+  socket.on('chat message', (msg) => {
     // Get the username from the session
-    const username = socket.request.session.username || "Anonymous";
+    const username = socket.request.session.username || 'Anonymous';
 
     // Send the message with the format "username: message"
     const formattedMessage = `${username} : ${msg}`;
-    io.emit("chat message", formattedMessage);
+    io.emit('chat message', formattedMessage);
   });
 });
-
 // logout
 app.post("/logout", (req, res) => {
   // Destroy the user's session to log them out

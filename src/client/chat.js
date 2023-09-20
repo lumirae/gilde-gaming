@@ -44,3 +44,4 @@ socket.on("chat message", function (msg) {
   const out = document.getElementById("chat");
   out.scrollTop = out.scrollHeight - out.clientHeight;
 });
+
