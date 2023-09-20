@@ -15,10 +15,25 @@
     </style>
   </head>
   <body>
+    <!-- Pop-up Window -->
+    <div id="waitingPopup" class="popup">
+      <div class="popup-content">
+        <div><span id="timer">05:00</span> / 05:00</div>
+        <br />
+        <div class="spinner"></div>
+        <p>Waiting for players...</p>
+        <div><span id="playerCount">0</span> / 10</div>
+        <br />
+        <button id="disconnectButton">Disconnect</button>
+      </div>
+    </div>
+
     <!-- Buttons for game -->
     <div class="buttons">
-      <a href="game"
-        ><button class="button-background"><b>Play</b></button></a
+      <a
+        ><button id="playButton" class="button-background">
+          <b>Play</b>
+        </button></a
       >
       <a href="#"
         ><button class="button-background"><b>Settings</b></button></a
@@ -46,6 +61,8 @@
       </form>
       <script src="/socket.io/socket.io.js"></script>
       <script src="/src/client/chat.js"></script>
+      <script src="/src/client/waitingRoom.js"></script>
+
       <script>
         // logout
         document.addEventListener("DOMContentLoaded", () => {
