@@ -12,9 +12,9 @@
     "socket.io": "^4.1.2"
   },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/server/index.js"
   },
-  "main": "main.js",
+  "main": "src/server/index.js",
   "keywords": [],
   "author": "",
   "license": "ISC"
