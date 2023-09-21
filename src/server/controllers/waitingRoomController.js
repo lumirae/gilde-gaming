@@ -17,11 +17,7 @@ function createNewLobby() {
 function startWaitingRoomTimer(lobby, io) {
   if (!lobby.timer) {
     lobby.startTime = Date.now(); // Record the start time when the timer begins
-    let counterTimer = 0;
     lobby.timer = setInterval(() => {
-
-      console.log('timer', counterTimer);
-      counterTimer++;
       const elapsedTime = Date.now() - lobby.startTime; // Calculate elapsed time for this lobby
       lobby.remainingTime = WAITING_ROOM_TIMEOUT - elapsedTime; // Update remaining time
 
@@ -34,7 +30,8 @@ function startWaitingRoomTimer(lobby, io) {
           remainingTime: lobby.remainingTime,
           isFull: lobby.players.length === MAX_PLAYERS,
           usernames: lobby.players.map((player) => player.username),
-          serverTimestamp: lobby.startTime, // Send the lobby-specific start time as the server's timestamp
+          serverTimestamp: lobby.startTime,
+          source: 'timer', // Add a source property to differentiate this event
         });
       }
     }, 1000);
@@ -60,19 +57,12 @@ function joinWaitingRoom(socket, io, username) {
     lobbies[lobbyToJoin.id] = lobbyToJoin;
   }
 
-  lobbyToJoin.players.push({ id: socket.id, username });
+  lobbyToJoin.players.push({ id: socket.id, username }); // Store the username
   socket.emit('joinedWaitingRoom', { username });
 
   // Start or resume the timer for the lobby
   startWaitingRoomTimer(lobbyToJoin, io);
 
-  io.emit('waitingRoomStatus', {
-    playerCount: lobbyToJoin.players.length,
-    remainingTime: lobbyToJoin.remainingTime,
-    isFull: lobbyToJoin.players.length === MAX_PLAYERS,
-    usernames: lobbyToJoin.players.map(player => player.username),
-    serverTimestamp: lobbyToJoin.startTime || Date.now(), // Use lobby-specific start time or current time
-  });
 }
 
 function handleDisconnect(socket, io) {
@@ -82,7 +72,7 @@ function handleDisconnect(socket, io) {
       const index = lobby.players.findIndex((player) => player.id === socket.id);
       if (index !== -1) {
         lobby.players.splice(index, 1);
-
+        
         io.emit('waitingRoomStatus', {
           serverTimestamp: Date.now(),
           playerCount: Object.values(lobbies).reduce((count, l) => count + l.players.length, 0),
@@ -92,6 +82,7 @@ function handleDisconnect(socket, io) {
             remainingTime: l.remainingTime,
             usernames: l.players.map((player) => player.username),
           })),
+          source: 'disconnect', // Add a source property to differentiate this event
         });
 
         if (lobby.players.length === 0) {

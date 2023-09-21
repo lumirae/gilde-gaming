@@ -64,8 +64,9 @@ io.use((socket, next) => {
 
 io.on("connection", (socket) => {
   // Handle a user joining the waiting room
-  socket.on("joinWaitingRoom", () => {
-    joinWaitingRoom(socket, io);
+  socket.on("joinWaitingRoom", (data) => {
+    const username = socket.request.session.username;
+    joinWaitingRoom(socket, io, username);
   });
 
   // Handle user disconnections
