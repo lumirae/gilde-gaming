@@ -20,10 +20,6 @@
     "answer": 9
   },
   {
-    "question": "Wat is 4 * 8?",
-    "answer": 32
-  },
-  {
     "question": "Wat is 15 - 9?",
     "answer": 6
   },
@@ -72,7 +68,7 @@
     "answer": 5
   },
   {
-    "question": "Wat is 25 gedeeld door 5?",
+    "question": "Wat is 25 / 5?",
     "answer": 5
   },
   {
@@ -88,7 +84,7 @@
     "answer": 42
   },
   {
-    "question": "Wat is 18 gedeeld door 3 plus 5?",
+    "question": "Wat is 18 / 3 + 5?",
     "answer": 11
   },
   {
