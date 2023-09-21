@@ -345,5 +345,32 @@
 }
 
 #disconnectButton:hover {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+#questiondisplay {
+  text-align: center;
+  margin-top: 467px;
+  margin-left: 145px;
+  font-size: 50;
+}
+
+#messageDisplay {
+  text-align: center;
+  margin-top: -522px;
+  margin-left: 131px;
+  font-size: 15;
+}
+
+.container {
+  position: relative;
+  height: 300px; /* Set the container's height */
+  overflow: hidden; /* Hide the part of the picture that moves out of the container */
+}
+
+#picture {
+  position: absolute;
+  top: 0; /* Initial position at the top */
+  transition: top 0.5s; /* Smooth transition effect */
+  max-width: 100%;
 }
