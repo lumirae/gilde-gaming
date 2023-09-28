@@ -26,9 +26,19 @@ app.use(sessionMiddleware);
 app.use("/public", express.static(path.resolve(__dirname, "../../public")));
 app.use("/src", express.static(path.resolve(__dirname, "../../src")));
 
+// Import language routes and controller
+const languageRoute = require('./routes/languageRoute');
+app.use('/language', languageRoute);
+
 // Import auth routes and controller
 const authRoutes = require("./routes/authRoute");
 app.use("/auth", authRoutes);
+
+// Serve language files from the 'languages' folder
+app.get("/language/:lang", (req, res) => {
+  const lang = req.params.lang;
+  res.sendFile(path.resolve(__dirname, `../languages/${lang}.json`));
+});
 
 // Define your routes here
 app.get("/", (req, res) => {
@@ -67,11 +77,6 @@ io.on("connection", (socket) => {
   socket.on("joinWaitingRoom", (data) => {
     const username = socket.request.session.username;
     joinWaitingRoom(socket, io, username);
-  });
-
-  // Handle user disconnections
-  socket.on('disconnect', () => {
-    handleDisconnect(socket, io);
   });
 
   // Handle user leaving queue

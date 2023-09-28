@@ -4,14 +4,14 @@ var questions = []; // Array to store the questions from the JSON file
 
 // Function to fetch questions from the JSON file
 function fetchQuestions() {
-  fetch('src/questions.json')
-    .then(response => response.json())
-    .then(data => {
+  fetch("src/questions.json")
+    .then((response) => response.json())
+    .then((data) => {
       questions = data;
       displayNextQuestion();
     })
-    .catch(error => {
-      console.error('Error fetching questions:', error);
+    .catch((error) => {
+      console.error("Error fetching questions:", error);
     });
 }
 
@@ -30,30 +30,30 @@ function displayNextQuestion() {
 
 // Function to display messages and update the score
 function displayMessage(message) {
-    var messageDisplay = document.getElementById("messageDisplay");
-    messageDisplay.textContent = message;
-  }
-  
-  function checkAnswer() {
-    var answer = document.getElementById("sumfield").value;
-  
-    if (currentQuestionIndex < questions.length) {
-      var currentQuestion = questions[currentQuestionIndex];
-  
-      // Check if the entered answer is correct
-      if (parseInt(answer) === currentQuestion.answer) {
-        score++;
-        document.getElementById("score").textContent = "Score: " + score;
-        currentQuestionIndex++;
-        displayNextQuestion();
-        displayMessage("Correct! Your score is now " + score);
-      } else {
-        score--; // Decrement the score by 1 for an incorrect answer
-        document.getElementById("score").textContent = "Score: " + score;
-        displayMessage("Incorrect. Try again! Your score is now " + score);
-      }
+  var messageDisplay = document.getElementById("messageDisplay");
+  messageDisplay.textContent = message;
+}
+
+function checkAnswer() {
+  var answer = document.getElementById("sumfield").value;
+
+  if (currentQuestionIndex < questions.length) {
+    var currentQuestion = questions[currentQuestionIndex];
+
+    // Check if the entered answer is correct
+    if (parseInt(answer) === currentQuestion.answer) {
+      score++;
+      document.getElementById("score").textContent = "Score: " + score;
+      currentQuestionIndex++;
+      displayNextQuestion();
+      displayMessage("Correct! Your score is now " + score);
+    } else {
+      score--; // Decrement the score by 1 for an incorrect answer
+      document.getElementById("score").textContent = "Score: " + score;
+      displayMessage("Incorrect. Try again! Your score is now " + score);
     }
   }
+}
 
 // Add an event listener to handle Enter key press in the input field
 document.getElementById("sumfield").addEventListener("keyup", function (event) {

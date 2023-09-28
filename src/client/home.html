@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Apen Race</title>
+    <title id="pageTitle">Apen Race</title>
     <link rel="stylesheet" type="text/css" href="public\style.css" />
     <link rel="stylesheet" type="text/css" href="src\client\style.css" />
     <link rel="icon" type="image/x-icon" href="public\images\favicon.ico" />
+    <script
+      src="https://kit.fontawesome.com/f9b6a0cf1e.js"
+      crossorigin="anonymous"
+    ></script>
     <style>
       body {
         background-repeat: no-repeat;
@@ -17,34 +21,116 @@
   <body>
     <div id="waitingPopup" class="popup">
       <div class="popup-content">
+        <div>
+          <p id="vote">Stem?</p>
+          <button id="skipButton">skip</button>
+          <button id="stayButton">blijf</button>
+          <p id="skipVotesText">skip stemmen: <span id="skipVotes">0</span></p>
+          <p id="stayVotesText">blijf stemmen: <span id="stayVotes">0</span></p>
+        </div>
         <div><span id="timer">05:00</span></div>
         <br />
-        <div class="spinner"></div>
-        <p>Waiting for players...</p>
+        <div id="spinner" class="spinner"></div>
+        <p id="waitingPlayer">wachten voor spelers...</p>
         <div><span id="playerCount">0</span> / 10</div>
         <div id="userList"></div>
         <br />
-        <button id="disconnectButton">Disconnect</button>
+        <button id="disconnectButton">verlaten</button>
       </div>
     </div>
 
-    <div class="buttons">
+    <div id="buttons" class="buttons">
       <a
         ><button id="playButton" class="button-background">
-          <b>Play</b>
+          <b>Speel</b>
         </button></a
-      >
-      <a href="#"
-        ><button class="button-background"><b>Settings</b></button></a
-      >
-      <a href="#"
-        ><button class="button-background"><b>Leaderboard</b></button></a
       >
       <a
-        ><button class="logout-button button-background">
-          <b>Logout</b>
+        ><button id="settingsButton" class="button-background">
+          <b>Opties</b>
         </button></a
       >
+      <a href="#"
+        ><button id="scoreboard" class="button-background">
+          <b>scoreboard</b>
+        </button></a
+      >
+      <a
+        ><button id="logout" class="logout-button button-background">
+          <b>uitloggen</b>
+        </button></a
+      >
+    </div>
+
+    <!-- settings -->
+    <div id="settingPopup">
+      <div class="settings-menu">
+        <h1 id="gameOptions">Game opties</h1>
+        <div class="option">
+          <label id="sound" for="geluid">Geluid:</label>
+          <span class="percentage">50%</span>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+            class="slider"
+            id="geluid"
+            name="geluid"
+          />
+        </div>
+        <div class="option">
+          <label id="music" for="muziek">Muziek:</label>
+          <span class="percentage">50%</span>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+            class="slider"
+            id="muziek"
+            name="muziek"
+          />
+
+        </div>
+        <script>
+          // Add this JavaScript code to your page
+          document.addEventListener("DOMContentLoaded", function () {
+            // Get all the input elements
+            const sliders = document.querySelectorAll(".slider");
+            const percentages = document.querySelectorAll(".percentage");
+
+            // Add event listeners to each input element
+            sliders.forEach((slider, index) => {
+              slider.addEventListener("input", () => {
+                // Update the corresponding percentage value
+                percentages[index].textContent = `${slider.value}%`;
+              });
+            });
+          });
+        </script>
+
+        <div id="option" class="option">
+          <label for="languageSelector" id="languageSelectorText">Selecteer Taal:</label>
+          <select id="languageSelector">
+            <option value="nl">Nederlands</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+          </select>
+        </div>
+        <div class="option">
+          <label id="difficultyText" for="difficulty"
+            >Moeilijkheidsgraad:</label
+          >
+          <select id="difficulty">
+            <option id="easy" value="easy">Makkelijk</option>
+            <option id="medium" value="medium">Gemiddeld</option>
+            <option id="hard" value="hard">Moeilijk</option>
+          </select>
+        </div>
+        <button id="settingsCloseButton"><i class="fa-solid fa-x"></i></button>
+      </div>
     </div>
 
     <!-- Chat -->
@@ -55,12 +141,14 @@
           id="input"
           autocomplete="off"
           maxlength="255"
-          placeholder="Type here to chat . . ."
+          placeholder="Typ hier om te chatten . . ."
         />
       </form>
       <script src="/socket.io/socket.io.js"></script>
-      <script src="/src/client/chat.js"></script>
-      <script src="/src/client/waitingRoom.js"></script>
+      <script src="/src/client/js/chat.js"></script>
+      <script src="/src/client/js/waitingRoom.js"></script>
+      <script src="/src/client/js/settings.js"></script>
+      <script src="/src/client/js/language.js"></script>
 
       <script>
         // logout

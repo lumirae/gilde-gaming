@@ -17,7 +17,10 @@ function createNewLobby() {
 function startWaitingRoomTimer(lobby, io) {
   if (!lobby.timer) {
     lobby.startTime = Date.now(); // Record the start time when the timer begins
-    lobby.timer = setInterval(() => {
+
+    const updateInterval = 1000; // Update the timer every second (or adjust as needed)
+
+    const updateTimer = () => {
       const elapsedTime = Date.now() - lobby.startTime; // Calculate elapsed time for this lobby
       lobby.remainingTime = WAITING_ROOM_TIMEOUT - elapsedTime; // Update remaining time
 
@@ -33,8 +36,12 @@ function startWaitingRoomTimer(lobby, io) {
           serverTimestamp: lobby.startTime,
           source: 'timer', // Add a source property to differentiate this event
         });
+        // Schedule the next update
+        lobby.timer = setTimeout(updateTimer, updateInterval);
       }
-    }, 1000);
+    };
+    // Start the initial timer immediately
+    updateTimer();
   }
 }
 

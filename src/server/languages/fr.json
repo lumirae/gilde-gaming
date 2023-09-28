@@ -1,0 +1,22 @@
+{
+    "pageTitle": "Course de singes",
+    "vote": "Vote",
+    "playButton": "Jouer",
+    "settingsButton": "Paramètres",
+    "disconnectButton": "Déconnecter",
+    "scoreboard": "Classement",
+    "logout": "Se déconnecter",
+    "gameOptions": "Possibilités",
+    "sound": "Son:",
+    "music": "Musique:",
+    "languageSelectorText": "Choisir la langue",
+    "easy": "Facile",
+    "medium": "Moyen",
+    "hard": "Dure",
+    "difficultyText": "Difficulté:",
+    "waitingPlayer": "j'attends les joueurs...",
+    "skipVotesText":"Sauter des votes:",
+    "stayVotesText":"continuez à voter:",
+    "skipButton":"Sauter",
+    "stayButton":"Rester"
+  }

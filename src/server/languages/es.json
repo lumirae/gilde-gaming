@@ -1,0 +1,22 @@
+{
+    "pageTitle": "¡Hola, Mundo!",
+    "vote": "Votar.",
+    "playButton": "Jugar",
+    "settingsButton": "ajustes",
+    "disconnectButton": "desconectar",
+    "scoreboard": "tabla de clasificación",
+    "logout": "Cerrar sesión",
+    "gameOptions": "Opciones",
+    "sound": "Sonido:",
+    "music": "Música:",
+    "languageSelectorText": "Seleccione el idioma",
+    "easy": "fácil",
+    "medium": "medio",
+    "hard": "dura",
+    "difficultyText": "dificultad:",
+    "waitingPlayer":"Esperando a los jugadoras ...",
+    "skipVotesText":"saltar votos:",
+    "stayVotesText":"Quedarse votos:",
+    "skipButton":"saltar",
+    "stayButton":"permanecer"
+  }

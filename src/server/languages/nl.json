@@ -1,0 +1,22 @@
+{
+    "pageTitle": "Apen Race",
+    "vote": "Stem",
+    "playButton": "Speel",
+    "settingsButton": "Instellingen",
+    "disconnectButton": "Verlaat Spel",
+    "scoreboard": "Leaderbord",
+    "logout": "Uitloggen",
+    "gameOptions": "Opties",
+    "sound": "Geluid:",
+    "music": "Muziek:",
+    "languageSelectorText": "Selecteer Taal",
+    "easy": "Makkelijk",
+    "medium": "Gemiddeld",
+    "hard": "Moeilijk",
+    "difficultyText": "Moeilijkheidsgraad",
+    "waitingPlayer":"Wachten voor spelers...",
+    "skipVotesText":"Stemmen voor overslaan:",
+    "stayVotesText":"Stemmen voor blijven :",
+    "skipButton":"Overslaan",
+    "stayButton":"Blijven"
+}

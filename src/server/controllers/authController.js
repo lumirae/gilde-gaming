@@ -15,6 +15,8 @@ const loginUser = (req, res) => {
   // Access the data sent from the client in req.body
   const username = req.body.username;
   const password = req.body.password;
+  const changePassword = req.body.password;
+  const changeUsername = req.body.username;
 
   // Retrieve the hashed password from the database using the username or email
   connection.query(
@@ -115,5 +117,4 @@ const registerUser = (req, res) => {
 module.exports = {
   loginUser,
   registerUser,
-  // Add other authentication-related functions here
 };
