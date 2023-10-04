@@ -104,7 +104,6 @@ io.on("connection", (socket) => {
 
   // Handle user leaving queue
   socket.on("disconnectFromQueue", () => {
-    console.log('Received disconnectRequest from client');
     waitingRoomManager.handleDisconnect(socket, io);
   });
 
