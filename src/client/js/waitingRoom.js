@@ -159,26 +159,24 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("updateVotes", (data) => {
     console.log("Received updateVotes event with data:", data);
 
+    const totalStayVotes = data.stayVotes;
+    const totalSkipVotes = data.skipVotes;
+
     if (data.votingType === "skip") {
       // Calculate the total skip votes by summing up all votes
-      const totalSkipVotes = Object.values(data.skipVotes).reduce(
-        (total, count) => total + count,
-        0
-      );
       skipCount.textContent = totalSkipVotes;
+      stayCount.textContent = totalStayVotes;
     } else if (data.votingType === "stay") {
       // Calculate the total stay votes by summing up all votes
-      const totalStayVotes = Object.values(data.stayVotes).reduce(
-        (total, count) => total + count,
-        0
-      );
       stayCount.textContent = totalStayVotes;
+      skipCount.textContent = totalSkipVotes;
     } else {
-      // Handle cleared votes here by resetting the vote counts to zero
-      skipVotes = 0;
-      stayVotes = 0;
-      skipCount.textContent = "0";
-      stayCount.textContent = "0";
+      
+      skipVotes = data.skipVotes;
+      stayVotes = data.stayVotes;
+
+      skipCount.textContent = skipVotes;
+      stayCount.textContent = stayVotes;
     }
   });
 });

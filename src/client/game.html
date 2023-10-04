@@ -1,6 +1,9 @@
 <h1>Score: <span id="score">0</span></h1>
-    <img id="image" src="/public/images/background.png" alt="Image">
-    <button onclick="changeScore(1)">Increase Score</button>
-    <button onclick="changeScore(-1)">Decrease Score</button>
+<div id="question-container">
+    <p id="question"></p>
+    <input type="text" id="answer" placeholder="Your Answer">
+    <input type="submit" value="Submit">
+    <p id="message"></p>
+</div>
 
-    <script src="/src/client/js/game.js"></script>
+<script src="/src/client/js/game.js"></script>

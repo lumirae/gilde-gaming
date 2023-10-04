@@ -59,6 +59,8 @@ class WaitingRoomManager {
 
   joinWaitingRoom(socket, io, username) {
     let lobbyToJoin = null;
+    let skipVotesI = 0;
+    let stayVotesI = 0;
 
     // Find an available lobby or create a new one
     for (const lobbyId in this.lobbies) {
@@ -77,6 +79,19 @@ class WaitingRoomManager {
       console.log(lobbyToJoin);
     }
 
+    function ObjectLengthII(object) {
+        var length = 0;
+        for (let key of object) {
+          // if( object.hasOwnProperty(key) ) {
+          length++;
+          //}
+        }
+        return length;
+      }
+
+      skipVotesI = ObjectLengthII(lobbyToJoin.skipVotes);
+      stayVotesI = ObjectLengthII(lobbyToJoin.stayVotes);
+
     lobbyToJoin.players.push({ id: socket.id, username }); // Store the username
     socket.emit("joinedWaitingRoom", { username });
 
@@ -85,8 +100,8 @@ class WaitingRoomManager {
 
     // Emit both sets of vote counts (skipVotes and stayVotes) to the player
     socket.emit("updateVotes", {
-      skipVotes: Object.fromEntries(lobbyToJoin.skipVotes),
-      stayVotes: Object.fromEntries(lobbyToJoin.stayVotes),
+      skipVotes: skipVotesI,
+      stayVotes: stayVotesI,
       playerCount: lobbyToJoin.players.length,
       votingType: "initial", // You can use an initial type to differentiate this from other updates
     });
@@ -109,15 +124,32 @@ class WaitingRoomManager {
     for (const lobbyId in this.lobbies) {
       if (this.lobbies.hasOwnProperty(lobbyId)) {
         const lobby = this.lobbies[lobbyId];
-        const index = lobby.players.findIndex((player) => player.id === socket.id);
+        const index = lobby.players.findIndex(
+          (player) => player.id === socket.id
+        );
         if (index !== -1) {
+          // Remove the player from the lobby
+          lobby.players.splice(index, 1);
+
           // Clear the player's votes
           lobby.skipVotes.delete(socket.id);
           lobby.stayVotes.delete(socket.id);
-  
-          // Remove the player from the lobby
-          lobby.players.splice(index, 1);
-  
+
+          // Emit an update event to all players in the lobby with the new vote counts
+          const totalSkipVotes = Array.from(lobby.skipVotes.values()).reduce(
+            (acc, count) => acc + count,
+            0
+          );
+          const totalStayVotes = Array.from(lobby.stayVotes.values()).reduce(
+            (acc, count) => acc + count,
+            0
+          );
+          io.to(lobby.players.map((player) => player.id)).emit("updateVotes", {
+            skipVotes: totalSkipVotes,
+            stayVotes: totalStayVotes,
+            playerCount: lobby.players.length,
+          });
+
           // Check if the lobby is empty
           if (lobby.players.length === 0) {
             // Reset the timer and void all votes
@@ -127,20 +159,7 @@ class WaitingRoomManager {
             lobby.startTime = null;
             lobby.skipVotes.clear();
             lobby.stayVotes.clear();
-          } else {
-            // Emit an update event to all players in the lobby with the new vote counts
-            io.to(lobby.players.map((player) => player.id)).emit("updateVotes", {
-              skipVotes: Object.fromEntries(lobby.skipVotes),
-              stayVotes: Object.fromEntries(lobby.stayVotes),
-              playerCount: lobby.players.length,
-            });
           }
-          // Send the cleared votes back to the disconnecting player
-          socket.emit("updateVotes", {
-            skipVotes: {},
-            stayVotes: {},
-            playerCount: 0,
-          });
           break;
         }
       }
@@ -150,6 +169,9 @@ class WaitingRoomManager {
   voteSkip(io, socket) {
     // Find the lobby that the player is in
     let lobby = null;
+    let stayVotesI = 0;
+    let skipVotesI = 0;
+
     for (const lobbyId in this.lobbies) {
       if (this.lobbies.hasOwnProperty(lobbyId)) {
         const currentLobby = this.lobbies[lobbyId];
@@ -166,25 +188,41 @@ class WaitingRoomManager {
         lobby.skipVotes.set(socket.id, 0);
       }
 
+      function ObjectLength(object) {
+        var length = 0;
+        for (let key of object) {
+          // if( object.hasOwnProperty(key) ) {
+          length++;
+          //}
+        }
+        return length;
+      }
+
       // Increase skip votes for this player in this lobby
       lobby.skipVotes.set(socket.id, lobby.skipVotes.get(socket.id) + 1);
 
+      skipVotesI = ObjectLength(lobby.skipVotes);
+
+      stayVotesI = ObjectLength(lobby.stayVotes);
+
       // Emit an update event with the skipVotes map for this lobby
       io.to(lobby.players.map((player) => player.id)).emit("updateVotes", {
-        skipVotes: Object.fromEntries(lobby.skipVotes),
-        stayVotes: Object.fromEntries(lobby.stayVotes),
+        skipVotes: skipVotesI,
+        stayVotes: stayVotesI,
         playerCount: lobby.players.length,
         votingType: "skip",
       });
 
       console.log(`Player ${socket.id} voted to skip in Lobby ${lobby.id}.`);
     }
-    // ...
   }
 
   voteStay(io, socket) {
     // Find the lobby that the player is in
     let lobby = null;
+    let stayVotesI = 0;
+    let skipVotesI = 0;
+
     for (const lobbyId in this.lobbies) {
       if (this.lobbies.hasOwnProperty(lobbyId)) {
         const currentLobby = this.lobbies[lobbyId];
@@ -201,13 +239,27 @@ class WaitingRoomManager {
         lobby.stayVotes.set(socket.id, 0);
       }
 
+      function ObjectLengthI(object) {
+        var length = 0;
+        for (let key of object) {
+          // if( object.hasOwnProperty(key) ) {
+          length++;
+          //}
+        }
+        return length;
+      }
+
       // Increase stay votes for this player in this lobby
       lobby.stayVotes.set(socket.id, lobby.stayVotes.get(socket.id) + 1);
 
+      skipVotesI = ObjectLengthI(lobby.skipVotes);
+
+      stayVotesI = ObjectLengthI(lobby.stayVotes);
+
       // Emit an update event with the stayVotes map for this lobby
       io.to(lobby.players.map((player) => player.id)).emit("updateVotes", {
-        skipVotes: Object.fromEntries(lobby.skipVotes),
-        stayVotes: Object.fromEntries(lobby.stayVotes),
+        skipVotes: skipVotesI,
+        stayVotes: stayVotesI,
         playerCount: lobby.players.length,
         votingType: "stay",
       });
@@ -216,5 +268,7 @@ class WaitingRoomManager {
     }
   }
 }
+
+
 
 module.exports = WaitingRoomManager;
