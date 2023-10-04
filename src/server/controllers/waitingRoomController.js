@@ -76,21 +76,21 @@ class WaitingRoomManager {
     if (!lobbyToJoin) {
       lobbyToJoin = this.createNewLobby();
       this.lobbies[lobbyToJoin.id] = lobbyToJoin;
-      console.log(lobbyToJoin);
+      // console.log(lobbyToJoin);
     }
 
     function ObjectLengthII(object) {
-        var length = 0;
-        for (let key of object) {
-          // if( object.hasOwnProperty(key) ) {
-          length++;
-          //}
-        }
-        return length;
+      var length = 0;
+      for (let key of object) {
+        // if( object.hasOwnProperty(key) ) {
+        length++;
+        //}
       }
+      return length;
+    }
 
-      skipVotesI = ObjectLengthII(lobbyToJoin.skipVotes);
-      stayVotesI = ObjectLengthII(lobbyToJoin.stayVotes);
+    skipVotesI = ObjectLengthII(lobbyToJoin.skipVotes);
+    stayVotesI = ObjectLengthII(lobbyToJoin.stayVotes);
 
     lobbyToJoin.players.push({ id: socket.id, username }); // Store the username
     socket.emit("joinedWaitingRoom", { username });
@@ -213,7 +213,48 @@ class WaitingRoomManager {
         votingType: "skip",
       });
 
-      console.log(`Player ${socket.id} voted to skip in Lobby ${lobby.id}.`);
+      // console.log(`Player ${socket.id} voted to skip in Lobby ${lobby.id}.`);
+
+      // Check if more than half of the players voted to skip
+      if (skipVotesI > lobby.players.length / 2) {
+        // Set the remaining time to 5 seconds
+        lobby.remainingTime = 5000; // 5 seconds in milliseconds
+        // Clear the existing timer and start a new one
+        clearInterval(lobby.timer);
+
+        // Create a function to periodically update the countdown and emit the event
+        const updateCountdownAndEmit = () => {
+          // Update the countdown
+          lobby.remainingTime -= 1000; // Subtract 1 second (1000 milliseconds) from the remaining time
+
+          // Emit the updated waiting room status to all players in the lobby
+
+          //TODO remove Buttons after countdown is initialized. 
+          io.to(lobby.players.map((player) => player.id)).emit(
+            "waitingRoomStatus",
+            {
+              playerCount: lobby.players.length,
+              remainingTime: lobby.remainingTime,
+              isFull: lobby.players.length === MAX_PLAYERS,
+              usernames: lobby.players.map((player) => player.username),
+              serverTimestamp: lobby.startTime,
+              source: "timer",
+            }
+          );
+
+          if (lobby.remainingTime <= 0) {
+            // Stop the loop when the countdown reaches 0
+            clearInterval(countdownInterval);
+            io.to(lobby.players.map((player) => player.id)).emit("startGame");
+          }
+        };
+
+        // Start the initial countdown
+        updateCountdownAndEmit();
+
+        // Set up a recurring interval to update the countdown and emit the event
+        const countdownInterval = setInterval(updateCountdownAndEmit, 1000); // Update every second (1000 milliseconds)
+      }
     }
   }
 
@@ -264,11 +305,9 @@ class WaitingRoomManager {
         votingType: "stay",
       });
 
-      console.log(`Player ${socket.id} voted to stay in Lobby ${lobby.id}.`);
+      // console.log(`Player ${socket.id} voted to stay in Lobby ${lobby.id}.`);
     }
   }
 }
-
-
 
 module.exports = WaitingRoomManager;

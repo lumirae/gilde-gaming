@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const voteStayButton = document.getElementById("voteStay");
   const skipCount = document.getElementById("skipCount");
   const stayCount = document.getElementById("stayCount");
+  const votingDiv = document.getElementById("votingDiv"); // Add the voting div
   const socket = io();
   let hasClickedPlay = false; // Track whether the player has clicked "Play"
   let countdown = 5 * 60; // Initial countdown value in seconds (5 minutes)
@@ -43,6 +44,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Function to update the UI based on the number of players in the lobby
+  function updateUI(playerCount) {
+    if (playerCount >= 3) {
+      votingDiv.style.display = "block";
+    } else {
+      votingDiv.style.display = "none";
+    }
+  }
+
   // Event listener for the disconnect button
   disconnectButton.addEventListener("click", () => {
     // Send a request to the server to disconnect from the queue (you need to implement this on the server side)
@@ -69,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
   playButton.addEventListener("click", () => {
     if (!hasClickedPlay) {
       const username = "Username"; // Make sure this is set correctly
-      // console.log("Username:", username);
       socket.emit("joinWaitingRoom", { username });
 
       // Show the waiting pop-up
@@ -115,13 +124,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle waiting room status updates from the server (e.g., player count and timer)
   socket.on("waitingRoomStatus", (data) => {
-    // console.log('Received waitingRoomStatus event:', data);
     playerCountSpan.textContent = data.playerCount;
 
     // Use the server's countdown value
     countdown = Math.max(data.remainingTime, 0); // Ensure countdown doesn't go negative
 
     updateTimerDisplay(countdown / 1000); // Update the timer display
+
+    // Update the UI based on the player count
+    updateUI(data.playerCount);
 
     if (data.usernames && Array.isArray(data.usernames)) {
       const userList = document.getElementById("userList");
@@ -163,15 +174,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalSkipVotes = data.skipVotes;
 
     if (data.votingType === "skip") {
-      // Calculate the total skip votes by summing up all votes
       skipCount.textContent = totalSkipVotes;
       stayCount.textContent = totalStayVotes;
     } else if (data.votingType === "stay") {
-      // Calculate the total stay votes by summing up all votes
       stayCount.textContent = totalStayVotes;
       skipCount.textContent = totalSkipVotes;
     } else {
-      
       skipVotes = data.skipVotes;
       stayVotes = data.stayVotes;
 
