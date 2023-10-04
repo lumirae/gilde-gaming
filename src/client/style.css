@@ -302,13 +302,10 @@
   position: fixed;
   top: 50%;
   left: 89%;
-  width: 7%;
+  width: 15%;
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.9);
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 5px;
-  padding-bottom: 30px;
+  padding: 5px 5px 25px 5px; 
   border-radius: 10px;
   text-align: center;
   color: #fff;
@@ -339,7 +336,7 @@
 }
 
 #disconnectButton {
-  width: 120px;
+  width: 150px;
   height: 40px;
   font-size: 1.1vw;
 }
@@ -374,25 +371,19 @@
   transition: top 0.5s;
   max-width: 100%;
 }
-#skipButton {
-  width: 45px;
+
+#userList li {
+  list-style-type: none;
+}
+
+#voteSkip, #voteStay {
+  width: 125px;
   height: 40px;
   font-size: 1.1vw;
   display: inline-block;
 }
 
-#stayButton {
-  width: 45px;
-  height: 40px;
-  font-size: 1.1vw;
-  display: inline-block;
-}
-
-#skipButton:hover {
-  cursor: pointer;
-}
-
-#stayButton:hover {
+#voteSkip:hover, #voteStay:hover {
   cursor: pointer;
 }
 
@@ -417,7 +408,8 @@
 /* Add this code to make text inside the option menu white */
 #settingPopup {
   color: white; /* Set the text color to white */
-  
+  padding: 15px; /* Add padding to the entire popup */
+  padding-top: 10px; /* Reduce the top padding of the popup */
 }
 
 /* Add this code to make sure dropdowns, inputs, and the exit button have their original styling */
@@ -427,18 +419,15 @@
   width: 100%;
   padding: 0.75rem;
   box-sizing: border-box;
-  border-radius: 2rem;
+  border-radius: 5px;
   border: 1px solid #dddddd;
   outline: none;
   background: #eeeeee;
   transition: background 0.4s, border-color 0.4s;
+  margin-bottom: 7.5px; /* Add margin to the bottom of dropdowns and inputs */
 }
 
-/* Increase spacing inside the popup window (Opties/Settings) */
-#settingPopup {
-  padding: 15px; /* Add padding to the entire popup */
- 
-}
+
 #settingPopup select:focus,
 #settingPopup input:focus {
   border-color: var(--color-primary); /* Use your specific focus color */
@@ -450,25 +439,11 @@
 #settingPopup .option {
   margin-bottom: 1rem; /* Adjust margin as needed */
 }
-
-
-/* Increase spacing inside dropdowns, inputs, etc. */
-#settingPopup select,
-#settingPopup input {
-  margin-bottom: 7.5px; /* Add margin to the bottom of dropdowns and inputs */
-}
-
 /* Increase spacing around the exit button */
 #exitButton {
   margin-top: 15px; /* Add margin above the exit button */
 
- 
 }
-/* Reduce the height of the brown area above "Game Opties" */
-#settingPopup {
-  padding-top: 10px; /* Reduce the top padding of the popup */
-}
-
 /* Adjust the margin of the "Opties" title */
 #settingPopup .opties-title {
   margin-bottom: 10px; /* Reduce the margin below the title */

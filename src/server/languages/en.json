@@ -17,7 +17,7 @@
     "waitingPlayer":"Waiting for players...",
     "skipVotesText":"Skip votes:",
     "stayVotesText":"Stay votes:",
-    "skipButton":"Skip",
-    "stayButton":"Stay"
+    "voteSkip":"Skip",
+    "voteStay":"Stay"
   }
   

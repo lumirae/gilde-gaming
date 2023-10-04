@@ -1,4 +1,4 @@
-// routes/languageRoute.js
+console.log('languageRoute.js = Loaded');
 
 const express = require('express');
 const router = express.Router();

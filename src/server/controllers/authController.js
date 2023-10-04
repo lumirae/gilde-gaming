@@ -1,3 +1,5 @@
+console.log('authController.js = Loaded');
+
 const bcrypt = require("bcrypt");
 const connection = require("../database.js");
 const express = require("express");

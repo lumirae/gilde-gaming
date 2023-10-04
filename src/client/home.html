@@ -9,6 +9,7 @@
       src="https://kit.fontawesome.com/f9b6a0cf1e.js"
       crossorigin="anonymous"
     ></script>
+    <script src="/socket.io/socket.io.js"></script>
     <style>
       body {
         background-repeat: no-repeat;
@@ -23,10 +24,12 @@
       <div class="popup-content">
         <div>
           <p id="vote">Stem?</p>
-          <button id="skipButton">skip</button>
-          <button id="stayButton">blijf</button>
-          <p id="skipVotesText">skip stemmen: <span id="skipVotes">0</span></p>
-          <p id="stayVotesText">blijf stemmen: <span id="stayVotes">0</span></p>
+          <button id="voteSkip">skip</button>
+          <button id="voteStay">blijf</button>
+          <p id="skipVotesText">skip stemmen:</p>
+          <span id="skipCount">0</span>
+          <p id="stayVotesText">blijf stemmen:</p>
+          <span id="stayCount">0</span>
         </div>
         <div><span id="timer">05:00</span></div>
         <br />
@@ -91,7 +94,6 @@
             id="muziek"
             name="muziek"
           />
-
         </div>
         <script>
           // Add this JavaScript code to your page
@@ -111,7 +113,9 @@
         </script>
 
         <div id="option" class="option">
-          <label for="languageSelector" id="languageSelectorText">Selecteer Taal:</label>
+          <label for="languageSelector" id="languageSelectorText"
+            >Selecteer Taal:</label
+          >
           <select id="languageSelector">
             <option value="nl">Nederlands</option>
             <option value="en">English</option>
@@ -180,6 +184,13 @@
 
               xhr.send();
             });
+        });
+      </script>
+
+      <script>
+        window.addEventListener("beforeunload", function (e) {
+          // Emit an event to the server to disconnect from the queue
+          socket.emit("disconnectFromQueue");
         });
       </script>
     </div>

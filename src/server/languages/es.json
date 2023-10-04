@@ -17,6 +17,6 @@
     "waitingPlayer":"Esperando a los jugadoras ...",
     "skipVotesText":"saltar votos:",
     "stayVotesText":"Quedarse votos:",
-    "skipButton":"saltar",
-    "stayButton":"permanecer"
+    "voteSkip":"saltar",
+    "voteStay":"permanecer"
   }

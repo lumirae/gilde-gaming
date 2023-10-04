@@ -17,6 +17,6 @@
     "waitingPlayer":"Wachten voor spelers...",
     "skipVotesText":"Stemmen voor overslaan:",
     "stayVotesText":"Stemmen voor blijven :",
-    "skipButton":"Overslaan",
-    "stayButton":"Blijven"
+    "voteSkip":"Overslaan",
+    "voteStay":"Blijven"
 }
