@@ -6,10 +6,10 @@ const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const port = process.env.PORT || 3000;
-const {
-  joinWaitingRoom,
-  handleDisconnect,
-} = require("./controllers/waitingRoomController"); // Import the waiting room controller
+const WaitingRoomManager = require('./controllers/waitingRoomController'); // Import the WaitingRoomManager class
+
+// Create an instance of WaitingRoomManager
+const waitingRoomManager = new WaitingRoomManager();
 
 // Create a session store using express-session
 const sessionMiddleware = session({
@@ -26,9 +26,18 @@ app.use(sessionMiddleware);
 app.use("/public", express.static(path.resolve(__dirname, "../../public")));
 app.use("/src", express.static(path.resolve(__dirname, "../../src")));
 
+// Define your routes here
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/index.html"));
+});
+
 // Import language routes and controller
-const languageRoute = require('./routes/languageRoute');
-app.use('/language', languageRoute);
+const languageRoutes = require("./routes/languageRoute");
+app.use("/language", languageRoutes);
+
+// Import waitingRoom routes and controller
+const waitingRoomRoutes = require("./routes/waitingRoomRoute");
+app.use("/waitingRoom", waitingRoomRoutes);
 
 // Import auth routes and controller
 const authRoutes = require("./routes/authRoute");
@@ -38,11 +47,6 @@ app.use("/auth", authRoutes);
 app.get("/language/:lang", (req, res) => {
   const lang = req.params.lang;
   res.sendFile(path.resolve(__dirname, `../languages/${lang}.json`));
-});
-
-// Define your routes here
-app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client/index.html"));
 });
 
 app.get("/home", (req, res) => {
@@ -73,15 +77,35 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
+
+  socket.on("voteSkip", (lobby) => {
+    // console.log("Received voteSkip from client with lobby data:", lobby);
+    waitingRoomManager.voteSkip(io, socket, lobby);
+  });
+
+  socket.on("voteStay", (lobby) => {
+    console.log("Received voteStay from client with lobby data:", lobby);
+    waitingRoomManager.voteStay(io, socket, lobby);
+  });
+
   // Handle a user joining the waiting room
   socket.on("joinWaitingRoom", (data) => {
+    const lobby = data.lobby;
     const username = socket.request.session.username;
-    joinWaitingRoom(socket, io, username);
+    socket.emit("joinedWaitingRoom", { username, lobby });
+
+    waitingRoomManager.joinWaitingRoom(socket, io, username);
+  });
+
+  // Handle user disconnections
+  socket.on("disconnect", () => {
+    waitingRoomManager.handleDisconnect(socket, io);
   });
 
   // Handle user leaving queue
   socket.on("disconnectFromQueue", () => {
-    handleDisconnect(socket, io);
+    console.log('Received disconnectRequest from client');
+    waitingRoomManager.handleDisconnect(socket, io);
   });
 
   // Handle chat messages

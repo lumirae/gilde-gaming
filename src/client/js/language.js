@@ -17,8 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const waitingPlayer = document.getElementById("waitingPlayer");
   const skipVotesText = document.getElementById("skipVotesText");
   const stayVotesText = document.getElementById("stayVotesText");
-  const skipButton = document.getElementById("skipButton");
-  const stayButton = document.getElementById("stayButton");
+  const voteSkip = document.getElementById("voteSkip");
+  const voteStay = document.getElementById("voteStay");
   const languageSelectorText = document.getElementById("languageSelectorText");
 
   let userLanguage; // Declare userLanguage variable outside of the fetch callback
@@ -48,8 +48,8 @@ document.addEventListener("DOMContentLoaded", function () {
         waitingPlayer.textContent = data.waitingPlayer;
         skipVotesText.textContent = data.skipVotesText;
         stayVotesText.textContent = data.stayVotesText;
-        skipButton.textContent = data.skipButton;
-        stayButton.textContent = data.stayButton;
+        voteSkip.textContent = data.voteSkip;
+        voteStay.textContent = data.voteStay;
         languageSelectorText.textContent = data.languageSelectorText;
       })
       .catch((error) =>

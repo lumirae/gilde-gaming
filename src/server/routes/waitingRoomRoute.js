@@ -1,12 +1,15 @@
+console.log('waitingRoomRoute.js = Loaded');
+
 const express = require('express');
 const router = express.Router();
-const { joinWaitingRoom, handleDisconnect } = require('./controllers/waitingRoomController.js');
+const { WaitingRoomManager } = require('../controllers/waitingRoomController.js');
 
 // Define waiting room routes
 router.post('/join', (req, res) => {
   // Handle user joining the waiting room
   const socket = req.app.get('socketIO'); // Get the socket.io instance from your app
-  joinWaitingRoom(socket, io);
+  const username = socket.request.session.username;
+  WaitingRoomManager.joinWaitingRoom(socket, io, username);
   res.status(200).send('Joined waiting room');
 });
 
@@ -14,7 +17,7 @@ router.post('/join', (req, res) => {
 router.post('/disconnect', (req, res) => {
   // Handle user disconnecting from the waiting room
   const socket = req.app.get('socketIO'); // Get the socket.io instance from your app
-  handleDisconnect(socket);
+  WaitingRoomManager.handleDisconnect(socket);
   res.status(200).send('Disconnected from waiting room');
 });
 

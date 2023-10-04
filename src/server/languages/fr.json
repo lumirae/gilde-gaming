@@ -17,6 +17,6 @@
     "waitingPlayer": "j'attends les joueurs...",
     "skipVotesText":"Sauter des votes:",
     "stayVotesText":"continuez à voter:",
-    "skipButton":"Sauter",
-    "stayButton":"Rester"
+    "voteSkip":"Sauter",
+    "voteStay":"Rester"
   }

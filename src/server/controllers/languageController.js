@@ -1,3 +1,5 @@
+console.log('languageController.js = Loaded');
+
 const db = require('../database');
 
 // Save the selected language for the logged-in user
