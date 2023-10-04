@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("voteStay", (lobby) => {
-    console.log("Received voteStay from client with lobby data:", lobby);
+    // console.log("Received voteStay from client with lobby data:", lobby);
     waitingRoomManager.voteStay(io, socket, lobby);
   });
 

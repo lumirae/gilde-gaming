@@ -40,17 +40,27 @@ function checkAnswer() {
   if (currentQuestionIndex < questions.length) {
     var currentQuestion = questions[currentQuestionIndex];
 
-    // Check if the entered answer is correct
     if (parseInt(answer) === currentQuestion.answer) {
       score++;
       document.getElementById("score").textContent = "Score: " + score;
       currentQuestionIndex++;
       displayNextQuestion();
       displayMessage("Correct! Your score is now " + score);
+
+      // Move the image up when the score increases
+      var scoreImageElement = document.getElementById("scoreImage");
+      scoreImageElement.style.marginTop = (score * 10) + "px"; // Adjust the value as needed
+      
     } else {
-      score--; // Decrement the score by 1 for an incorrect answer
+      score--;
       document.getElementById("score").textContent = "Score: " + score;
+      currentQuestionIndex++;
+      displayNextQuestion();
       displayMessage("Incorrect. Try again! Your score is now " + score);
+
+      // Move the image up when the score decreases (wrong answer)
+      var scoreImageElement = document.getElementById("scoreImage");
+      scoreImageElement.style.marginTop = (-score * 10) + "px"; // Move up
     }
   }
 }
