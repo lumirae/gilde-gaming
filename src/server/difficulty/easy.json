@@ -1,0 +1,174 @@
+[
+  {
+    "question": "Wat is 2 + 2?",
+    "answer": 4
+  },
+  {
+    "question": "Wat is 5 * 7?",
+    "answer": 35
+  },
+  {
+    "question": "Wat is 10 - 3?",
+    "answer": 7
+  },
+  {
+    "question": "Wat is 12 * 7?",
+    "answer": 84
+  },
+  {
+    "question": "Wat is 3 + 6?",
+    "answer": 9
+  },
+  {
+    "question": "Wat is 15 - 9?",
+    "answer": 6
+  },
+  {
+    "question": "Wat is 9 * 5?",
+    "answer": 45
+  },
+  {
+    "question": "Wat is 20 + 3?",
+    "answer": 23
+  },
+  {
+    "question": "Wat is 14 - 7?",
+    "answer": 7
+  },
+  {
+    "question": "Wat is 6 * 9?",
+    "answer": 54
+  },
+  {
+    "question": "Wat is 25 + 12?",
+    "answer": 37
+  },
+  {
+    "question": "Wat is 8 * 4?",
+    "answer": 32
+  },
+  {
+    "question": "Wat is 15 + 27?",
+    "answer": 42
+  },
+  {
+    "question": "Wat is 7 * 9?",
+    "answer": 63
+  },
+  {
+    "question": "Wat is 48 / 6?",
+    "answer": 8
+  },
+  {
+    "question": "Wat is 3 in het kwadraat?",
+    "answer": 9
+  },
+  {
+    "question": "Wat is 20 - (5 * 3)?",
+    "answer": 5
+  },
+  {
+    "question": "Wat is 25 / 5?",
+    "answer": 5
+  },
+  {
+    "question": "Wat is de wortel van 64?",
+    "answer": 8
+  },
+  {
+    "question": "Wat is 12 + 15 - 7?",
+    "answer": 20
+  },
+  {
+    "question": "Wat is 9 * 4 + 6?",
+    "answer": 42
+  },
+  {
+    "question": "Wat is 18 / 3 + 5?",
+    "answer": 11
+  },
+  {
+    "question": "Wat is 1/4 + 1/4?",
+    "answer": "1/2"
+  },
+  {
+    "question": "Wat is 3/5 - 1/5?",
+    "answer": "2/5"
+  },
+  {
+    "question": "Wat is 3/8 + 5/8?",
+    "answer": "1"
+  },
+  {
+    "question": "Wat is 2/5 van 15?",
+    "answer": "6"
+  },
+  {
+    "question": "Wat is 1/3 van 12?",
+    "answer": "4"
+  },
+  {
+    "question": "Wat is 3/4 van 16?",
+    "answer": "12"
+  },
+  {
+    "question": "Wat is 1/6 van 30?",
+    "answer": "5"
+  },
+  {
+    "question": "Wat is 2/7 + 3/7?",
+    "answer": "5/7"
+  },
+  {
+    "question": "Wat is 2/5 van 25?",
+    "answer": "10"
+  },
+  {
+    "question": "Hoeveel centimeters zijn er in een meter?",
+    "answer": "100"
+  },
+  {
+    "question": "Hoeveel millimeters zijn er in een meter?",
+    "answer": "1000"
+  },
+  {
+    "question": "Hoeveel gram zijn er in een kilogram?",
+    "answer": "1000"
+  },
+  {
+    "question": "Hoeveel milliliters zijn er in een liter?",
+    "answer": "1000"
+  },
+  {
+    "question": "Hoeveel dagen zijn er in een week?",
+    "answer": "7"
+  },
+  {
+    "question": "Hoeveel maanden zijn er in een jaar?",
+    "answer": "12"
+  },
+  {
+    "question": "Hoeveel minuten zijn er in een uur?",
+    "answer": "60"
+  },
+  {
+    "question": "Hoeveel graden zijn er in een cirkel?",
+    "answer": "360"
+  },
+  {
+    "question": "Hoeveel zijden heeft een vierkant?",
+    "answer": "4"
+  },
+  {
+    "question": "Hoeveel hoeken heeft een driehoek?",
+    "answer": "3"
+  },
+  {
+      "question": "Tel de volgende breuken op: (3/8) + (5/12) - (1/6).",
+      "answer": "7/12"
+  },
+  {
+      "question": "Een pizza is verdeeld in 10 gelijke stukken. Als Sarah (3/5) van de pizza eet, hoeveel stukken heeft ze dan gegeten?",
+      "answer": "6 stukken"
+  }
+]
