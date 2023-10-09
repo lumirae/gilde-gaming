@@ -33,7 +33,11 @@ form.addEventListener("submit", function (e) {
     resetChatVisibility(); // Reset chat visibility
     socket.emit("chat message", input.value);
     input.value = "";
-    startChatTimeout(); // Restart the timeout
+
+    // Introduce a 3-second delay before restarting the timeout
+    setTimeout(function () {
+      startChatTimeout(); // Restart the timeout after 3 seconds
+    }, 3000);
   }
 });
 
@@ -44,4 +48,3 @@ socket.on("chat message", function (msg) {
   const out = document.getElementById("chat");
   out.scrollTop = out.scrollHeight - out.clientHeight;
 });
-

@@ -3,7 +3,7 @@ console.log('languageController.js = Loaded');
 const db = require('../database');
 
 // Save the selected language for the logged-in user
-exports.saveLanguagePreference = (username, language) => {
+const saveLanguagePreference = (username, language) => {
   const query = 'INSERT INTO account (user_name, language) VALUES (?, ?) ON DUPLICATE KEY UPDATE language = VALUES(language)';
   db.query(query, [username, language], (error, results) => {
     if (error) {
@@ -15,7 +15,7 @@ exports.saveLanguagePreference = (username, language) => {
 };
 
 // Retrieve the selected language for the logged-in user
-exports.getLanguagePreference = (username, callback) => {
+const getLanguagePreference = (username, callback) => {
     const query = 'SELECT language FROM account WHERE user_name = ?';
     db.query(query, [username], (error, results) => {
       if (error) {
@@ -27,3 +27,8 @@ exports.getLanguagePreference = (username, callback) => {
       }
     });
   };
+
+  module.exports = {
+    saveLanguagePreference,
+    getLanguagePreference,
+  }

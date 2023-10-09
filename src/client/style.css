@@ -239,12 +239,17 @@
 }
 
 #sumfield {
-  position: fixed;
-  bottom: 12%;
-  left: 45%;
-  width: 300px;
-  height: 75px;
-  font-size: 50px;
+  position: absolute;
+  text-align: left;
+  bottom: 5%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Center both horizontally and vertically */
+  font-size: 1.5vw;
+  width: 20vw;
+  height: 5vh;
 }
 
 .return {
@@ -305,7 +310,7 @@
   width: 15%;
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.9);
-  padding: 5px 5px 25px 5px; 
+  padding: 5px 5px 25px 5px;
   border-radius: 10px;
   text-align: center;
   color: #fff;
@@ -324,6 +329,14 @@
   height: 40px;
   animation: spin 2s linear infinite;
   margin: 0 auto;
+}
+
+#lobbyId {
+  text-align: right;
+  margin: 0;
+  padding-top: 1px;
+  padding-right: 1px;
+  font-size: 1vw;
 }
 
 @keyframes spin {
@@ -345,18 +358,58 @@
   cursor: pointer;
 }
 
-#questiondisplay {
+#questionDisplay {
+  position: absolute;
   text-align: center;
-  margin-top: 467px;
-  margin-left: 145px;
-  font-size: 50;
+  bottom: 15%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Center both horizontally and vertically */
+  font-size: 1.75vw;
+  width: 300px;
+  height: auto;
+}
+
+#climbLeft,
+#climbRight {
+  position: absolute;
+  text-align: center;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.75vw;
+  width: 300px;
+  height: auto;
+}
+
+#scoreImage {
+  width: auto;
+  height: auto;
+}
+
+#score {
+  font-size: 1.3vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 10px;
+  margin-top: 10px;
 }
 
 #messageDisplay {
+  position: absolute;
   text-align: center;
-  margin-top: -522px;
-  margin-left: 131px;
-  font-size: 15;
+  top: 20%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Center both horizontally and vertically */
+  font-size: 1.75vw;
+  width: 300px;
+  height: auto;
 }
 
 .container {
@@ -376,14 +429,16 @@
   list-style-type: none;
 }
 
-#voteSkip, #voteStay {
+#voteSkip,
+#voteStay {
   width: 125px;
   height: 40px;
   font-size: 1.1vw;
   display: inline-block;
 }
 
-#voteSkip:hover, #voteStay:hover {
+#voteSkip:hover,
+#voteStay:hover {
   cursor: pointer;
 }
 
@@ -394,7 +449,12 @@
   top: 47%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.9); /* Change background color to match the waiting room */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.9
+  ); /* Change background color to match the waiting room */
   padding: 20px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -402,8 +462,6 @@
   color: white; /* Set text color to white */
   width: 80%; /* Adjust the width as needed */
   max-width: 400px; /* Set a maximum width if desired */
-  
-  
 }
 /* Add this code to make text inside the option menu white */
 #settingPopup {
@@ -414,8 +472,7 @@
 
 /* Add this code to make sure dropdowns, inputs, and the exit button have their original styling */
 #settingPopup select,
-#settingPopup input
- {
+#settingPopup input {
   width: 100%;
   padding: 0.75rem;
   box-sizing: border-box;
@@ -427,13 +484,11 @@
   margin-bottom: 7.5px; /* Add margin to the bottom of dropdowns and inputs */
 }
 
-
 #settingPopup select:focus,
 #settingPopup input:focus {
   border-color: var(--color-primary); /* Use your specific focus color */
   background: #ffffff;
 }
-
 
 /* Increase spacing around individual options or elements inside the popup */
 #settingPopup .option {
@@ -442,7 +497,6 @@
 /* Increase spacing around the exit button */
 #exitButton {
   margin-top: 15px; /* Add margin above the exit button */
-
 }
 /* Adjust the margin of the "Opties" title */
 #settingPopup .opties-title {
@@ -463,7 +517,7 @@
 }
 /* Style for the percentage display */
 
-  /* Style for the percentage display */
+/* Style for the percentage display */
 .percentage {
   font-size: 16px;
   display: inline-block; /* Change to inline-block to ensure the percentage is always displayed */
@@ -474,6 +528,9 @@
 #dropdown,
 .dropdown {
   font-size: 16px; /* Adjust the font size as needed */
-  font-family:pixellari;
+  font-family: pixellari;
 }
- 
+
+.timer {
+  margin-top: 20px;
+}

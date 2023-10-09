@@ -21,6 +21,7 @@
   </head>
   <body>
     <div id="waitingPopup" class="popup">
+      <p id="lobbyId"></p>
       <div class="popup-content">
         <div id="votingDiv">
           <p id="vote">Stem?</p>
@@ -31,7 +32,7 @@
           <p id="stayVotesText">blijf stemmen:</p>
           <span id="stayCount">0</span>
         </div>
-        <div><span id="timer">05:00</span></div>
+        <div class="timer"><span id="timer">05:00</span></div>
         <br />
         <div id="spinner" class="spinner"></div>
         <p id="waitingPlayer">wachten voor spelers...</p>
@@ -127,7 +128,7 @@
           <label id="difficultyText" for="difficulty"
             >Moeilijkheidsgraad:</label
           >
-          <select id="difficulty">
+          <select id="difficultySelector">
             <option id="easy" value="easy">Makkelijk</option>
             <option id="medium" value="medium">Gemiddeld</option>
             <option id="hard" value="hard">Moeilijk</option>
@@ -153,6 +154,7 @@
       <script src="/src/client/js/waitingRoom.js"></script>
       <script src="/src/client/js/settings.js"></script>
       <script src="/src/client/js/language.js"></script>
+      <script src="/src/client/js/difficulty.js"></script>
 
       <script>
         // logout

@@ -118,6 +118,10 @@ class WaitingRoomManager {
         source: "playerJoin", // Add a source property to differentiate this event
       }
     );
+    socket.emit("lobbyData", {
+      lobbyId: lobbyToJoin.id,
+      players: lobbyToJoin.players,
+    });
   }
 
   handleDisconnect(socket, io) {
@@ -239,6 +243,7 @@ class WaitingRoomManager {
               usernames: lobby.players.map((player) => player.username),
               serverTimestamp: lobby.startTime,
               source: "timer",
+              votingType: "skipSuccess",
             }
           );
 
