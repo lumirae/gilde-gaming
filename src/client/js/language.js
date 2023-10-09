@@ -23,14 +23,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let userLanguage; // Declare userLanguage variable outside of the fetch callback
 
-  console.log("Script loaded."); // Check if the script is loaded
+  // console.log("Script loaded."); // Check if the script is loaded
 
   function loadLanguage(language) {
-    console.log(`Loading language: ${language}`);
+    // console.log(`Loading language: ${language}`);
     fetch(`src/server/languages/${language}.json`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("JSON data loaded:", data);
+        // console.log("JSON data loaded:", data);
         pageTitle.textContent = data.pageTitle;
         playButton.textContent = data.playButton;
         vote.textContent = data.vote;
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Event listener for language selector change
   languageSelector.addEventListener("change", function () {
     const selectedLanguage = languageSelector.value;
-    console.log(`Selected language: ${selectedLanguage}`);
+    // console.log(`Selected language: ${selectedLanguage}`);
     loadLanguage(selectedLanguage);
   });
 
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
       userLanguage = data.language; // Assign the selected language to userLanguage
       if (userLanguage) {
         languageSelector.value = userLanguage;
-        console.log('User Language:', userLanguage);
+        // console.log('User Language:', userLanguage);
         // Load the initial language set by user
         loadLanguage(userLanguage || 'nl');
       }

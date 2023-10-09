@@ -1,8 +1,8 @@
-<!DOCTYPE =html>
+<!DOCTYPE html>
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="public\style.css" />
-    <link rel="stylesheet" type="text/css" href="src\client\style.css" />
+    <link rel="stylesheet" type="text/css" href="/src/client/style.css" />
     <link rel="icon" type="image/x-icon" href="public\images\favicon.ico" />
     <script
       src="https://kit.fontawesome.com/f9b6a0cf1e.js"
@@ -13,6 +13,10 @@
   <body>
     <p id="score">Score: 0</p>
     <img id="scoreImage" src="/public/images/background.png"/>
+    <div id="monkeyClimb">
+      <img src="../../public/images/monkey stationary.png" id="climbLeft">
+      <img src="" id="climbRight">
+    </div>
     <div id="questionDisplay"></div>
         <input
           type="text"
@@ -48,8 +52,8 @@
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/src/client/chat.js"></script>
-    <script src="/src/server/math.js"></script>
+    <script src="/src/client/js/chat.js"></script>
+    <script src="/src/client/js/game.js"></script>
     <script>
       var quitButton = document.getElementById("quitButton");
       var quitModal = document.getElementById("quitModal");

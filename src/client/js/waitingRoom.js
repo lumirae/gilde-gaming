@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const skipCount = document.getElementById("skipCount");
   const stayCount = document.getElementById("stayCount");
   const votingDiv = document.getElementById("votingDiv"); // Add the voting div
+  const lobbyId = document.getElementById("lobbyId");
   const socket = io();
   let hasClickedPlay = false; // Track whether the player has clicked "Play"
   let countdown = 5 * 60; // Initial countdown value in seconds (5 minutes)
@@ -90,10 +91,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  socket.on("lobbyData", (data) => {
+    const lobby = data.lobbyId;
+    // console.log("Received lobby data in waitingRoom.js:", lobby);
+    lobbyId.textContent= lobby,
+        // Now, you can send the lobby data back to the gameController.js
+        socket.emit("lobbyData", { lobby });
+  });
+
   // Event listener for "joinedWaitingRoom" from the server
   socket.on("joinedWaitingRoom", (data) => {
-    console.log("Joined waiting room. Username:", data.username);
+    // console.log("Joined waiting room. Username:", data.username);
     lobby = data.lobby;
+
   });
 
   // Event listener for the "Vote Skip" button
@@ -168,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Update the vote counts based on server data
   socket.on("updateVotes", (data) => {
-    console.log("Received updateVotes event with data:", data);
+    // console.log("Received updateVotes event with data:", data);
 
     const totalStayVotes = data.stayVotes;
     const totalSkipVotes = data.skipVotes;
@@ -179,12 +189,15 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (data.votingType === "stay") {
       stayCount.textContent = totalStayVotes;
       skipCount.textContent = totalSkipVotes;
-    } else {
+    } else if (data.votingType === "skipSuccess") {
+      
       skipVotes = data.skipVotes;
       stayVotes = data.stayVotes;
 
       skipCount.textContent = skipVotes;
       stayCount.textContent = stayVotes;
+    } else {
+      console.error = "Secret error (not possible to get this)";
     }
   });
 });

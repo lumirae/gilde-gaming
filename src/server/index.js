@@ -35,18 +35,33 @@ app.get("/", (req, res) => {
 const languageRoutes = require("./routes/languageRoute");
 app.use("/language", languageRoutes);
 
+// Import difficulty routes and controller
+const difficultyRoutes = require("./routes/difficultyRoute");
+app.use("/difficulty", difficultyRoutes);
+
 // Import waitingRoom routes and controller
 const waitingRoomRoutes = require("./routes/waitingRoomRoute");
 app.use("/waitingRoom", waitingRoomRoutes);
+
+// Import waitingRoom routes and controller
+const gameRoute = require("./routes/gameRoute");
+app.use("/gameRoute", gameRoute);
 
 // Import auth routes and controller
 const authRoutes = require("./routes/authRoute");
 app.use("/auth", authRoutes);
 
+
 // Serve language files from the 'languages' folder
 app.get("/language/:lang", (req, res) => {
   const lang = req.params.lang;
   res.sendFile(path.resolve(__dirname, `../languages/${lang}.json`));
+});
+
+// Serve difficulty files from the 'difficulty' folder
+app.get("/difficulty/:diff", (req, res) => {
+  const diff = req.params.diff;
+  res.sendFile(path.resolve(__dirname, `../difficulty/${diff}.json`));
 });
 
 app.get("/home", (req, res) => {
@@ -77,6 +92,13 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
+
+  socket.on("lobbyData", (data) => {
+    // console.log(`Data:`, data);
+    const lobby = data.lobby;
+    // console.log(`Received lobby data in gameController.js:`, lobby);
+    
+  });
 
   socket.on("voteSkip", (lobby) => {
     // console.log("Received voteSkip from client with lobby data:", lobby);
