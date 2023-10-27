@@ -13,3 +13,4 @@ settingsCloseButton.addEventListener("click", function () {
   //Close the popup
   settingPopup.style.display = "none";
 });
+

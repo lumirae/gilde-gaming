@@ -18,6 +18,10 @@
     "skipVotesText":"Skip votes:",
     "stayVotesText":"Stay votes:",
     "voteSkip":"Skip",
-    "voteStay":"Stay"
+    "voteStay":"Stay",
+    "gameExplanation":"Goal: the goal of the game is to be the first to reach the top of the tree.",
+    "gameExplanation1":"Game: you are asked questions in the middle of your screen that have to do with arithmetic, so every question you get right you go up a bit on the tree, but be careful if you make a mistake you go back down.",
+    "gameExplanation2":"Difficulty: The questions have 3 difficulty levels that you can adjust in the settings.",
+    "gameExplanation3":"The sums: the questions include: addition, subtraction, multiplication, division, squares and roots."
   }
   

@@ -18,5 +18,10 @@
     "skipVotesText":"saltar votos:",
     "stayVotesText":"Quedarse votos:",
     "voteSkip":"saltar",
-    "voteStay":"permanecer"
+    "voteStay":"permanecer",
+    "gameExplanation": "Objetivo: el objetivo del juego es ser el primero en llegar a la cima del árbol. ",
+    "gameExplanation1":"Juego: te hacen preguntas en medio de tu pantalla que tienen que ver con aritmética, por lo que cada pregunta que aciertas subes un poco en el árbol, pero cuidado, si te equivocas vuelves a bajar.",
+    "gameExplanation2":"Dificultad: Las preguntas tienen 3 niveles de dificultad que puedes ajustar en la configuración.",
+    "gameExplanation3":"Les sommes : les questions comprennent : l'addition, la soustraction, la multiplication, la division, les carrés et les racines."
+  
   }

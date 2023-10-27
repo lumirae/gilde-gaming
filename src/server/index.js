@@ -10,7 +10,6 @@ const WaitingRoomManager = require('./controllers/waitingRoomController'); // Im
 
 // Create an instance of WaitingRoomManager
 const waitingRoomManager = new WaitingRoomManager();
-
 // Create a session store using express-session
 const sessionMiddleware = session({
   secret: "your-secret-key", // Change this to a strong, random string
@@ -25,6 +24,9 @@ app.use(sessionMiddleware);
 // Serve static files
 app.use("/public", express.static(path.resolve(__dirname, "../../public")));
 app.use("/src", express.static(path.resolve(__dirname, "../../src")));
+// Serve static files from the "/src/client/js" directory
+app.use(express.static(path.resolve(__dirname, "../../src/client/js")));
+
 
 // Define your routes here
 app.get("/", (req, res) => {
@@ -43,14 +45,16 @@ app.use("/difficulty", difficultyRoutes);
 const waitingRoomRoutes = require("./routes/waitingRoomRoute");
 app.use("/waitingRoom", waitingRoomRoutes);
 
-// Import waitingRoom routes and controller
-const gameRoute = require("./routes/gameRoute");
-app.use("/gameRoute", gameRoute);
-
 // Import auth routes and controller
 const authRoutes = require("./routes/authRoute");
 app.use("/auth", authRoutes);
 
+// Import auth routes and controller
+const questionsRoute = require("./routes/questionsRoute");
+app.use("/questions", questionsRoute);
+
+const gameRoutes = require('./routes/gameRoute');
+app.use('/game', gameRoutes);
 
 // Serve language files from the 'languages' folder
 app.get("/language/:lang", (req, res) => {
@@ -61,7 +65,7 @@ app.get("/language/:lang", (req, res) => {
 // Serve difficulty files from the 'difficulty' folder
 app.get("/difficulty/:diff", (req, res) => {
   const diff = req.params.diff;
-  res.sendFile(path.resolve(__dirname, `../difficulty/${diff}.json`));
+  res.sendFile(path.resolve(__dirname, `../server/questions/${diff}.json`));
 });
 
 app.get("/home", (req, res) => {
@@ -93,11 +97,15 @@ io.use((socket, next) => {
 
 io.on("connection", (socket) => {
 
-  socket.on("lobbyData", (data) => {
-    // console.log(`Data:`, data);
-    const lobby = data.lobby;
-    // console.log(`Received lobby data in gameController.js:`, lobby);
-    
+  socket.on("submitAnswer", (data) => {
+    const submittedAnswer = parseInt(data.answer, 10);
+    const submittedQuestion = parseInt(data.question, 10);
+// console.log(submittedAnswer, submittedQuestion)
+    if (submittedAnswer === submittedQuestion) {
+      socket.emit("answerResult", { correctAnswer: true });
+    } else {
+      socket.emit("answerResult", { correctAnswer: false });
+    }
   });
 
   socket.on("voteSkip", (lobby) => {
@@ -109,7 +117,7 @@ io.on("connection", (socket) => {
     // console.log("Received voteStay from client with lobby data:", lobby);
     waitingRoomManager.voteStay(io, socket, lobby);
   });
-
+  
   // Handle a user joining the waiting room
   socket.on("joinWaitingRoom", (data) => {
     const lobby = data.lobby;

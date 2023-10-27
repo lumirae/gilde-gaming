@@ -26,9 +26,40 @@
   margin: 2.5vh 0;
 }
 
+#info {
+  position: relative;
+  top: 10px;
+  left: 10px;
+  color: rgb(206, 206, 206); /* Set text color to white */
+  background-color: #0f0f0f70;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1.3rem;
+  border-radius: 3px;
+}
+
+#info:hover {
+  background-color: #1a1a1a70;
+}
+
+#infoHoverContent {
+  display: none;
+}
+#info:hover #infoHoverContent {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  display: block;
+  background-color: #1a1a1a70;
+  width: 600px;
+  cursor: auto;
+}
+
 .buttons {
   position: absolute;
-  top: 20%;
+  top: 18%;
   left: 45vw;
   right: 45vw;
 }
@@ -42,8 +73,8 @@
 }
 
 .buttons button {
-  width: 10vw;
-  height: 5vw;
+  width: 11vw;
+  height: 6vw;
   display: block;
   color: #ffffff;
   font-size: 1.35vw;
@@ -126,6 +157,7 @@
 }
 
 .login .container {
+  height: auto;
   width: 400px;
   max-width: 400px;
   margin: 1rem;
@@ -367,16 +399,18 @@
     -50%,
     -50%
   ); /* Center both horizontally and vertically */
-  font-size: 1.75vw;
+  font-size: 2vw;
   width: 300px;
   height: auto;
+  color: white;
+  font-weight: bold;
 }
 
 #climbLeft,
 #climbRight {
   position: absolute;
   text-align: center;
-  top: 45%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 1.75vw;
@@ -384,18 +418,31 @@
   height: auto;
 }
 
+.imageContainer {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
 #scoreImage {
-  width: auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: auto;
 }
 
-#score {
+#score,
+#scoreText {
   font-size: 1.3vw;
   position: absolute;
   top: 0;
   left: 0;
   margin-left: 10px;
-  margin-top: 10px;
+  margin-top: 200px;
+  z-index: 10;
+  color: white;
+  font-weight: bold;
 }
 
 #messageDisplay {
@@ -410,6 +457,8 @@
   font-size: 1.75vw;
   width: 300px;
   height: auto;
+  color: white;
+  font-weight: bold;
 }
 
 .container {
@@ -440,6 +489,28 @@
 #voteSkip:hover,
 #voteStay:hover {
   cursor: pointer;
+}
+
+/* finished game */
+#finishedGamePopup {
+  display: none;
+  position: fixed;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.9
+  ); /* Change background color to match the waiting room */
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  color: white; /* Set text color to white */
+  width: 80%; /* Adjust the width as needed */
+  max-width: 400px; /* Set a maximum width if desired */
 }
 
 /* settings */
