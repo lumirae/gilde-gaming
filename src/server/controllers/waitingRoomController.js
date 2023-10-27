@@ -135,7 +135,7 @@ class WaitingRoomManager {
           // Remove the player from the lobby
           lobby.players.splice(index, 1);
 
-          // Clear the player's votes
+          // Clear the player's votes using their socket ID
           lobby.skipVotes.delete(socket.id);
           lobby.stayVotes.delete(socket.id);
 
@@ -163,6 +163,12 @@ class WaitingRoomManager {
             lobby.startTime = null;
             lobby.skipVotes.clear();
             lobby.stayVotes.clear();
+
+            socket.emit("updateVotes", {
+              skipVotes: 0,
+              stayVotes: 0,
+              source: "noPlayers",
+            });
           }
           break;
         }
@@ -222,7 +228,7 @@ class WaitingRoomManager {
       // Check if more than half of the players voted to skip
       if (skipVotesI > lobby.players.length / 2) {
         // Set the remaining time to 5 seconds
-        lobby.remainingTime = 5000; // 5 seconds in milliseconds
+        lobby.remainingTime = 50000; // 5 seconds in milliseconds
         // Clear the existing timer and start a new one
         clearInterval(lobby.timer);
 
@@ -233,7 +239,7 @@ class WaitingRoomManager {
 
           // Emit the updated waiting room status to all players in the lobby
 
-          //TODO remove Buttons after countdown is initialized. 
+          //TODO remove Buttons after countdown is initialized.
           io.to(lobby.players.map((player) => player.id)).emit(
             "waitingRoomStatus",
             {
@@ -246,6 +252,15 @@ class WaitingRoomManager {
               votingType: "skipSuccess",
             }
           );
+
+          io.to(lobby.players.map((player) => player.id)).emit("updateVotes", {
+            skipVotes: skipVotesI,
+            stayVotes: stayVotesI,
+            playerCount: lobby.players.length,
+            remainingTime: lobby.remainingTime,
+            source: "timer",
+            votingType: "skipSuccess",
+          });
 
           if (lobby.remainingTime <= 0) {
             // Stop the loop when the countdown reaches 0

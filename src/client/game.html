@@ -11,20 +11,58 @@
   </head>
 
   <body>
-    <p id="score">Score: 0</p>
-    <img id="scoreImage" src="/public/images/background.png"/>
+    <p id="scoreText" style="font-size: 3rem">
+      Score: <span id="score" style="font-size: 3rem"> 0 </span>
+    </p>
+    <div class="imageContainer">
+      <img
+        id="scoreImage"
+        src="/public/images/longTreeBase.png"
+        draggable="false"
+        style="-moz-user-select: none; user-select: none"
+        ondragstart="return false;"
+      />
+    </div>
     <div id="monkeyClimb">
-      <img src="../../public/images/monkey stationary.png" id="climbLeft">
-      <img src="" id="climbRight">
+      <img
+        src="../../public/images/monkey stationary.png"
+        id="climbLeft"
+        draggable="false"
+        style="-moz-user-select: none; user-select: none"
+        ondragstart="return false;"
+      />
+      <img
+        src=""
+        id="climbRight"
+        draggable="false"
+        style="-moz-user-select: none; user-select: none"
+        ondragstart="return false;"
+      />
     </div>
     <div id="questionDisplay"></div>
-        <input
-          type="text"
-          id="sumfield"
-          autocomplete="off"
-          maxlength="255"
-          placeholder="Type here to answer . . ."
-        />
+
+    <!-- settings -->
+    <div id="finishedGamePopup">
+      <div id="nr1"></div>
+      <div id="nr2"></div>
+      <div id="nr3"></div>
+      <div id="nr4"></div>
+      <div id="nr5"></div>
+      <div id="nr6"></div>
+      <div id="nr7"></div>
+      <div id="nr8"></div>
+      <div id="nr9"></div>
+      <div id="nr10"></div>
+    </div>
+
+    <!-- CHAT -->
+    <input
+      type="text"
+      id="sumfield"
+      autocomplete="off"
+      maxlength="255"
+      placeholder="Type here to answer . . ."
+    />
     <div id="messageDisplay"></div>
     <!-- Chat -->
     <div class="chat" id="chat">
@@ -74,6 +112,11 @@
       // Close the modal when "No" is clicked
       noButton.addEventListener("click", function () {
         quitModal.style.display = "none";
+      });
+
+      window.addEventListener("unload", function (e) {
+        // sends player to home menu when refreshing page
+        window.location.href = "/home";
       });
     </script>
   </body>

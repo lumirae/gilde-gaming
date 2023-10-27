@@ -6,27 +6,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // console.log("Script loaded."); // Check if the script is loaded
 
-  // Event listener for language selector change
+  // Event listener for difficulty selector change
   difficultySelector.addEventListener("change", function () {
     const selectedDifficulty = difficultySelector.value;
-    console.log(`Selected language: ${selectedDifficulty}`);
+    console.log(`Selected difficulty: ${selectedDifficulty}`);
     loadDifficulty(selectedDifficulty);
   });
 
   // Save the selected difficulty when the user changes it
   difficultySelector.addEventListener("change", () => {
-
+    const updatedDifficulty = difficultySelector.value;
     fetch("/difficulty/save-difficulty", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ difficulty: selectedDifficulty }),
+      body: JSON.stringify({ difficulty: updatedDifficulty }),
     });
   });
 
   // Load the user's selected difficulty when the page loads
-  function fetchQuestions() {
+  function fetchDifficulty() {
     fetch("/difficulty/get-difficulty")
       .then((response) => response.json())
       .then((data) => {
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   function loadDifficulty(difficulty) {
     // console.log(`Loading difficulty: ${difficulty}`);
-    fetch(`src/server/difficulty/${difficulty}.json`)
+    fetch(`src/server/questions/${difficulty}.json`)
       .then((response) => response.json())
       .then((data) => {
         // console.log("JSON data loaded:", data);
@@ -53,5 +53,5 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Call the fetchQuestions function to load questions when the page loads
-  fetchQuestions();
+  fetchDifficulty();
 });

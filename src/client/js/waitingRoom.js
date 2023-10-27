@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const username = "Username"; // Make sure this is set correctly
       socket.emit("joinWaitingRoom", { username });
 
-      // Show the waiting pop-up
+      // Show the waiting pop-upd
       showPopup();
 
       // Disable the "Play" button after clicking
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Update the vote counts based on server data
   socket.on("updateVotes", (data) => {
-    // console.log("Received updateVotes event with data:", data);
+     console.log("Received updateVotes event with data:", data);
 
     const totalStayVotes = data.stayVotes;
     const totalSkipVotes = data.skipVotes;
@@ -191,12 +191,24 @@ document.addEventListener("DOMContentLoaded", () => {
       skipCount.textContent = totalSkipVotes;
     } else if (data.votingType === "skipSuccess") {
       
+      voteSkipButton.disabled = true;
+      voteStayButton.disabled = true;
+
       skipVotes = data.skipVotes;
       stayVotes = data.stayVotes;
 
       skipCount.textContent = skipVotes;
       stayCount.textContent = stayVotes;
     } else {
+      voteSkipButton.disabled = false;
+      voteStayButton.disabled = false;
+
+      skipVotes = 0;
+      stayVotes = 0;
+
+      skipCount.textContent = skipVotes;
+      stayCount.textContent = stayVotes;
+
       console.error = "Secret error (not possible to get this)";
     }
   });

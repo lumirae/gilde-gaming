@@ -20,6 +20,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const voteSkip = document.getElementById("voteSkip");
   const voteStay = document.getElementById("voteStay");
   const languageSelectorText = document.getElementById("languageSelectorText");
+  const gameExplanation = document.getElementById("gameExplanation");
+  const gameExplanation1 = document.getElementById("gameExplanation1");
+  const gameExplanation2 = document.getElementById("gameExplanation2");
+  const gameExplanation3 = document.getElementById("gameExplanation3");
 
   let userLanguage; // Declare userLanguage variable outside of the fetch callback
 
@@ -51,6 +55,10 @@ document.addEventListener("DOMContentLoaded", function () {
         voteSkip.textContent = data.voteSkip;
         voteStay.textContent = data.voteStay;
         languageSelectorText.textContent = data.languageSelectorText;
+        gameExplanation.textContent = data.gameExplanation;
+        gameExplanation1.textContent = data.gameExplanation1;
+        gameExplanation2.textContent = data.gameExplanation2;
+        gameExplanation3.textContent = data.gameExplanation3;
       })
       .catch((error) =>
         console.error(`Error loading /language/${language}: ${error}`)

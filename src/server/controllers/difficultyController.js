@@ -1,9 +1,11 @@
 console.log('difficultyController.js = Loaded');
 
+// const { set } = require('..');
 const db = require('../database');
 
 // Save the selected difficulty for the logged-in user
 const saveDifficultyPreference = (username, difficulty) => {
+  console.log(username, " : ", difficulty)
   const query = 'INSERT INTO account (user_name, difficulty) VALUES (?, ?) ON DUPLICATE KEY UPDATE difficulty = VALUES(difficulty)';
   db.query(query, [username, difficulty], (error, results) => {
     if (error) {
@@ -28,7 +30,6 @@ const getDifficultyPreference = (username, callback) => {
       }
     });
   };
-
   module.exports = {
     saveDifficultyPreference,
     getDifficultyPreference,
