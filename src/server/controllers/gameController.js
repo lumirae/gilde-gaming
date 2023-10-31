@@ -1,65 +1,84 @@
-// Load questions from a JSON file based on the selected difficulty and the number of players
-function loadQuestions(difficulty) {
-  try {
-    const rawQuestions = fs.readFileSync(`../../difficulty/${difficulty}.json`);
-    const allQuestions = JSON.parse(rawQuestions);
-    
-    // Limit the number of questions to 20
-    const limitedQuestions = allQuestions.slice(0, 20);
+console.log("gameController.js = Loaded");
 
-    return limitedQuestions;
-  } catch (error) {
-    console.error("Error loading questions:", error);
-    return [];
+const dataStorage = require("./dataStorage"); // Import the data storage module
+
+class GameManager {
+  constructor(socket, io, connectedSockets) {
+    this.socket = socket;
+    this.io = io;
+    this.connectedSockets = connectedSockets;
   }
-}
 
-// Set up initial game state when the game starts
-function startGame(players, gameState) {
-  gameState.players = players; // Assign the array of players to gameState
-  gameState.questions = initializeQuestionsForPlayers(players, gameState);
-  gameState.currentPlayerIndex = 0; // Start with the first player
-
-  // Determine the maximum number of questions for the game
-  const maxQuestions = gameState.questions.length;
-
-  // Trigger the pop-up or notification when all players are done
-  if (gameState.currentPlayerIndex === maxQuestions) {
-    // All players are done; implement your pop-up/notification logic here
-    // You can emit an event to the clients to show a pop-up.
+  // Function to store lobby data
+  storeData(lobbyData) {
+    dataStorage.storeData(lobbyData); // Use the data storage module to store data
   }
-}
 
-// Function to handle a player's answer submission
-function submitAnswer(playerId, answer) {
-  return new Promise((resolve, reject) => {
-    // Get the player's current question from your game state
-    const player = gameState.players.find((p) => p.id === playerId);
+  submitAnswer(data) {
+    // Retrieve stored data using the data storage module
+    const lobbyData = dataStorage.retrieveData(); // Corrected variable name
 
-    if (gameState.currentPlayerIndex < gameState.questions.length) {
-      const currentQuestion = gameState.questions[gameState.currentPlayerIndex];
-      // Implement your answer validation logic here
-      const correctAnswer = currentQuestion.answer.toLowerCase();
-      const playerAnswer = answer.toLowerCase();
+    // Now you can access lobbyData in this function
+    // console.log("Stored lobby data:", lobbyData);
 
-      if (playerAnswer === correctAnswer) {
-        // Update the player's score if the answer is correct
-        player.score += 1;
-        gameState.currentPlayerIndex++; // Move to the next question
-        resolve({ message: 'Correct answer!', isCorrect: true });
-      } else {
-        resolve({ message: 'Incorrect answer. Try again.', isCorrect: false });
-      }
-    } else {
-      // All players are done; provide an appropriate message
-      resolve({ message: 'All players are done. The game has ended.', isCorrect: false });
+    // Continue with your submitAnswer code
+    const username = this.socket.request.session.username;
+    const submittedAnswer = parseInt(data.answer, 10);
+    const submittedQuestion = parseInt(data.question, 10);
+    const questionIndex = parseInt(data.index, 10);
+
+    if (submittedAnswer === submittedQuestion) {
+      this.socket.emit("answerResult", { correctAnswer: true });
+    } else if (submittedAnswer !== submittedQuestion) {
+      this.socket.emit("answerResult", { correctAnswer: false });
     }
-  });
+
+    // console.log(questionIndex);
+    // console.log(username);
+try {
+    if (!Array.isArray(lobbyData.players)) {
+      // If the 'players' property is not an array, handle it here
+      console.error(
+        "Invalid lobbyData format - 'players' is not an array:",
+        lobbyData.players
+      );
+      return;
+    }
+
+
+    // Now you can safely loop through the 'players' array
+    lobbyData.players.forEach((playerData) => {
+      if (playerData.id) {
+        const playerSocketId = playerData.id;
+
+        // Find the socket with the given playerSocketId from the map
+        const playerSocket = this.connectedSockets.get(playerSocketId);
+
+        if (playerSocket) {
+          playerSocket.emit("progress", { user : username, index : questionIndex});
+          // console.log("Send successfull to client");
+        } else {
+          console.error("No socket found with id:", playerSocketId);
+        }
+      } else {
+        console.error(
+          "Player data does not contain an 'id' property:",
+          playerData
+        );
+      }
+    });
+  } catch {
+    // console.log("player not found");
+    playerNotFoundError();
+  }
+  }
+}
+
+function playerNotFoundError() {
+  throw new Error('An error occurred');
 }
 
 module.exports = {
-  loadQuestions,
-  startGame,
-  submitAnswer,
-  // Add other game-related functions as needed
+  GameManager,
+  playerNotFoundError,
 };

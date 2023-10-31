@@ -93,10 +93,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   socket.on("lobbyData", (data) => {
     const lobby = data.lobbyId;
-    // console.log("Received lobby data in waitingRoom.js:", lobby);
-    lobbyId.textContent= lobby,
-        // Now, you can send the lobby data back to the gameController.js
-        socket.emit("lobbyData", { lobby });
+    const lobbyData = data;
+    // console.log("Received lobby data in waitingRoom.js:", lobbyData);
+    lobbyId.textContent = lobby;
+  
+    // Now, you can send the lobby data to index.js
+    socket.emit("lobbyData", lobbyData);
   });
 
   // Event listener for "joinedWaitingRoom" from the server
@@ -108,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Event listener for the "Vote Skip" button
   voteSkipButton.addEventListener("click", () => {
-    console.log("Clicked Vote Skip");
+    // console.log("Clicked Vote Skip");
     if (!voted) {
       voted = true;
       skipVotes++;
@@ -121,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Event listener for the "Vote Stay" button
   voteStayButton.addEventListener("click", () => {
-    console.log("Clicked Vote Stay");
+    // console.log("Clicked Vote Stay");
     if (!voted) {
       voted = true;
       stayVotes++;
@@ -167,18 +169,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Event listener for "voteSkip" from the client
   socket.on("voteSkip", (data) => {
     socket.emit("voteSkip"); // Inform the server about the vote
-    console.log(data);
+    // console.log(data);
   });
 
   // Event listener for "voteStay" from the client
   socket.on("voteStay", (data) => {
     socket.emit("voteStay"); // Inform the server about the vote
-    console.log(data);
+    // console.log(data);
   });
 
   // Update the vote counts based on server data
   socket.on("updateVotes", (data) => {
-     console.log("Received updateVotes event with data:", data);
+    //  console.log("Received updateVotes event with data:", data);
 
     const totalStayVotes = data.stayVotes;
     const totalSkipVotes = data.skipVotes;

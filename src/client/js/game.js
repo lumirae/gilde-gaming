@@ -50,7 +50,7 @@ function fetchQuestions(difficulty) {
       return response.json();
     })
     .then((data) => {
-      console.log("Questions loaded:", data);
+      // console.log("Questions loaded:", data);
       questions = data;
       displayQuestion();
     })
@@ -58,24 +58,6 @@ function fetchQuestions(difficulty) {
       console.error("Error loading questions:", error);
     });
 }
-
-// // Function to load questions from the backend
-// function fetchQuestions(difficulty) {
-//   fetch(`/difficulty/${difficulty}`)
-//     .then((response) => {
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! Status: ${response.status}`);
-//       }
-//       return response.json();
-//     })
-//     .then((data) => {
-//       questions = data;
-//       displayQuestion();
-//     })
-//     .catch((error) => {
-//       console.error("Error loading questions:", error);
-//     });
-// }
 
 // Display the current question
 function displayQuestion() {
@@ -86,10 +68,23 @@ function displayQuestion() {
     // submitButton.disabled = false; // Enable the submit button
   } else {
     // All questions answered
-    questionElement.textContent = "All questions answered!";
+    questionElement.textContent = "";
     answerInput.style.display = "none";
     finishedGamePopup.style.display = "block";
     // submitButton.style.display = "none";
+
+    if (score === 20){
+      let winPoint = 0;
+      winPoint ++
+      // console.log(winPoint);
+      fetch("/leaderboard/save-leaderboard", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ wins: winPoint }),
+      });
+    }
   }
 }
 
@@ -99,7 +94,7 @@ function checkAnswer() {
   const currentQuestionAnswer = questions[currentQuestionIndex].answer;
 // console.log(userAnswer, currentQuestionAnswer)
   // Send the user's answer to the server using sockets
-  socket.emit("submitAnswer", { answer: userAnswer, question: currentQuestionAnswer });
+  socket.emit("submitAnswer", {index: currentQuestionIndex, answer: userAnswer, question: currentQuestionAnswer });
 }
 
 // Initialize the game when the page loads
@@ -116,12 +111,6 @@ window.addEventListener("load", () => {
     }
   });
 
-  // // Attach an event listener to the submit button
-  // submitButton.addEventListener("click", () => {
-  //   checkAnswer();
-  //   submitButton.disabled = true; // Disable the submit button after submission
-  // });
-
   // Listen for the answer result from the server
   socket.on("answerResult", (data) => {
     if (data.correctAnswer === true) {
@@ -130,7 +119,7 @@ window.addEventListener("load", () => {
     } else if (data.correctAnswer === false) {
       score--;
       messageElement.textContent = "Incorrect! -1";
-    } else {
+    } else{
       erorr.log("no data gotten: ", data);
     }
 
@@ -140,12 +129,21 @@ window.addEventListener("load", () => {
 
     document.getElementById("score").textContent = score;
     const maxBottomValue = 2;
-    const imageMoveAmount = score * -50; // Adjust the value as needed
+    const imageMoveAmount = score * -200; // Adjust the value as needed
 
     if (imageMoveAmount < maxBottomValue) {
     scoreImageElement.style.bottom = imageMoveAmount + "px";
     }
     currentQuestionIndex += 1;
     displayQuestion(); // Display the next question after 1 second
+ 
   });
+
+  socket.on("progress", (data) => {
+    // console.log("Progress event received:", data);
+    const { user, index } = data;
+    // console.log("Username:", user);
+    // console.log("Question Index:", index);
+  });
+  
 });

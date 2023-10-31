@@ -9,7 +9,7 @@ const saveLanguagePreference = (username, language) => {
     if (error) {
       console.error('Error saving/updating language preference:', error);
     } else {
-      console.log('Language preference saved/updated successfully');
+      // console.log('Language preference saved/updated successfully');
     }
   });
 };

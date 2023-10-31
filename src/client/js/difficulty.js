@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Event listener for difficulty selector change
   difficultySelector.addEventListener("change", function () {
     const selectedDifficulty = difficultySelector.value;
-    console.log(`Selected difficulty: ${selectedDifficulty}`);
+    // console.log(`Selected difficulty: ${selectedDifficulty}`);
     loadDifficulty(selectedDifficulty);
   });
 
@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
   }
+
   function loadDifficulty(difficulty) {
     // console.log(`Loading difficulty: ${difficulty}`);
     fetch(`src/server/questions/${difficulty}.json`)

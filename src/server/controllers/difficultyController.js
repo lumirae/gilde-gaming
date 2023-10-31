@@ -5,13 +5,13 @@ const db = require('../database');
 
 // Save the selected difficulty for the logged-in user
 const saveDifficultyPreference = (username, difficulty) => {
-  console.log(username, " : ", difficulty)
+  // console.log(username, " : ", difficulty);
   const query = 'INSERT INTO account (user_name, difficulty) VALUES (?, ?) ON DUPLICATE KEY UPDATE difficulty = VALUES(difficulty)';
   db.query(query, [username, difficulty], (error, results) => {
     if (error) {
       console.error('Error saving/updating difficulty preference:', error);
     } else {
-      console.log('difficulty preference saved/updated successfully');
+      // console.log('difficulty preference saved/updated successfully');
     }
   });
 };
@@ -30,6 +30,7 @@ const getDifficultyPreference = (username, callback) => {
       }
     });
   };
+
   module.exports = {
     saveDifficultyPreference,
     getDifficultyPreference,

@@ -52,9 +52,11 @@
   top: 0;
   left: 100%;
   display: block;
-  background-color: #1a1a1a70;
+  background-color: #1a1a1ae8;
   width: 600px;
   cursor: auto;
+  padding: 10px;
+  z-index: 2;
 }
 
 .buttons {
@@ -511,6 +513,7 @@
   color: white; /* Set text color to white */
   width: 80%; /* Adjust the width as needed */
   max-width: 400px; /* Set a maximum width if desired */
+  height: auto;
 }
 
 /* settings */
@@ -604,4 +607,76 @@
 
 .timer {
   margin-top: 20px;
+}
+
+.leaderboardPopup {
+  display: none;
+  position: fixed;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.9);
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  color: white;
+  width: 80%;
+  max-width: 400px;
+}
+
+/* Use CSS Grid for the table layout */
+.parent {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  height: 100%;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.child-1 {
+  background: red;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 3 end;
+}
+
+.child-2 {
+  background: green;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 3 end;
+}
+
+.child-3 {
+  background: black;
+  grid-column-start: 3;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 3 end;
+}
+
+
+.child-1,
+.child-2,
+.child-3 {
+  align-items: center;
+  color: white;
+  display: flex;
+  justify-content: center;
+  
+}
+
+#secret {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+  color: #ffffff09;
+  background-color: #0000000a;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
 }
