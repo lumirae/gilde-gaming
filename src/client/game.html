@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title id="pageTitle">Apen Race</title>
     <link rel="stylesheet" type="text/css" href="public\style.css" />
     <link rel="stylesheet" type="text/css" href="/src/client/style.css" />
     <link rel="icon" type="image/x-icon" href="public\images\favicon.ico" />
@@ -11,13 +12,19 @@
   </head>
 
   <body>
-    <p id="scoreText" style="font-size: 3rem">
-      Score: <span id="score" style="font-size: 3rem"> 0 </span>
+    <audio id="gameMusic" loop autoplay>
+      <source src="/public/sounds/gameMusic.mp3" type="audio/mp3" />
+      <source src="/public/sounds/gameMusic.ogg" type="audio/ogg" />
+      <source src="/public/sounds/gameMusic.wav" type="audio/wav" />
+      Your browser does not support the audio element.
+    </audio>
+    <p id="scoreText">
+      <span id="score" style="font-size: 3rem"> 0 </span>
     </p>
     <div class="imageContainer">
       <img
         id="scoreImage"
-        src="/public/images/longTreeBase.png"
+        src="/public/images/gameAchtergrond.png"
         draggable="false"
         style="-moz-user-select: none; user-select: none"
         ondragstart="return false;"
@@ -41,24 +48,19 @@
     </div>
     <div id="questionDisplay"></div>
 
-    <!-- settings -->
+    <!-- finished game -->
     <div id="finishedGamePopup">
-      <div id="nr1"></div>
-      <div id="nr2"></div>
-      <div id="nr3"></div>
-      <div id="nr4"></div>
-      <div id="nr5"></div>
-      <div id="nr6"></div>
-      <div id="nr7"></div>
-      <div id="nr8"></div>
-      <div id="nr9"></div>
-      <div id="nr10"></div>
+      <div id="endDisplay">Je hebt het einde bereikt!! <br> Ga terug naar de home pagina om opnieuw te spelen.</div>
+      <button id="endButton" class="return">
+        <i class="fa-solid fa-x"></i>
+      </button>
     </div>
 
-    <!-- CHAT -->
+    <!-- somveld -->
     <input
       type="text"
       id="sumfield"
+      name="sumInput"
       autocomplete="off"
       maxlength="255"
       placeholder="Type here to answer . . ."
@@ -70,6 +72,7 @@
       <form id="form" action="" style="margin-bottom: 0px">
         <input
           id="input"
+          name="chatInput"
           autocomplete="off"
           maxlength="255"
           placeholder="Type here to chat . . ."
@@ -92,12 +95,18 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/src/client/js/chat.js"></script>
     <script src="/src/client/js/game.js"></script>
+    <script src="/src/client/js/language.js"></script>
     <script>
+      var endButton = document.getElementById("endButton");
       var quitButton = document.getElementById("quitButton");
       var quitModal = document.getElementById("quitModal");
       var yesButton = document.getElementById("yesButton");
       var noButton = document.getElementById("noButton");
 
+      endButton.addEventListener("click", function () {
+        quitModal.style.display = "block";
+      });
+      
       // Show the modal when the quit button is clicked
       quitButton.addEventListener("click", function () {
         quitModal.style.display = "block";
@@ -118,6 +127,14 @@
         // sends player to home menu when refreshing page
         window.location.href = "/home";
       });
+
+      var audio = document.getElementById("gameMusic");
+
+          if (localStorage.getItem("volume")) {
+            var storedVolume = localStorage.getItem("volume");
+            audio.volume = storedVolume / 100;
+          }
     </script>
+    
   </body>
 </html>

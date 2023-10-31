@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 const loginUser = (req, res) => {
   if (!req.body) {
-    console.log(req);
+    // console.log(req);
   }
   // Access the data sent from the client in req.body
   const username = req.body.username;

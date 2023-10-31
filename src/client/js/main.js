@@ -140,8 +140,8 @@ document.querySelector("#createAccount").addEventListener("submit", (e) => {
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
-      console.log(xhr.status);
-      console.log(xhr.responseText);
+      // console.log(xhr.status);
+      // console.log(xhr.responseText);
 
       // Parse the response JSON
       const response = JSON.parse(xhr.responseText);

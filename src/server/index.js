@@ -2,12 +2,14 @@ const cors = require("cors");
 const path = require("path");
 const express = require("express");
 const session = require("express-session");
+require("dotenv").config();
 const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const port = process.env.PORT || 3000;
-const WaitingRoomManager = require('./controllers/waitingRoomController'); // Import the WaitingRoomManager class
-
+// console.log(process.env.PORT);
+const WaitingRoomManager = require("./controllers/waitingRoomController"); // Import the WaitingRoomManager class
+const { GameManager } = require("./controllers/gameController");
 // Create an instance of WaitingRoomManager
 const waitingRoomManager = new WaitingRoomManager();
 // Create a session store using express-session
@@ -24,9 +26,7 @@ app.use(sessionMiddleware);
 // Serve static files
 app.use("/public", express.static(path.resolve(__dirname, "../../public")));
 app.use("/src", express.static(path.resolve(__dirname, "../../src")));
-// Serve static files from the "/src/client/js" directory
-app.use(express.static(path.resolve(__dirname, "../../src/client/js")));
-
+app.use("/js", express.static(path.resolve(__dirname, "../../src/client/js")));
 
 // Define your routes here
 app.get("/", (req, res) => {
@@ -41,6 +41,10 @@ app.use("/language", languageRoutes);
 const difficultyRoutes = require("./routes/difficultyRoute");
 app.use("/difficulty", difficultyRoutes);
 
+// Import leaderboard routes and controller
+const leaderRoutes = require("./routes/leaderRoute");
+app.use("/leaderboard", leaderRoutes);
+
 // Import waitingRoom routes and controller
 const waitingRoomRoutes = require("./routes/waitingRoomRoute");
 app.use("/waitingRoom", waitingRoomRoutes);
@@ -53,8 +57,8 @@ app.use("/auth", authRoutes);
 const questionsRoute = require("./routes/questionsRoute");
 app.use("/questions", questionsRoute);
 
-const gameRoutes = require('./routes/gameRoute');
-app.use('/game', gameRoutes);
+const gameRoutes = require("./routes/gameRoute");
+app.use("/game", gameRoutes);
 
 // Serve language files from the 'languages' folder
 app.get("/language/:lang", (req, res) => {
@@ -90,22 +94,40 @@ app.get("/game", (req, res) => {
   }
 });
 
+const playerNotFoundError = require('./controllers/gameController');
+
+// Define a route that triggers the error
+app.get('/trigger-error', (req, res) => {
+  try {
+    playerNotFoundError.playerNotFoundError();
+  } catch (error) {
+    // Handle the error and perform a redirect
+    console.error('Error:', error);
+    res.status(302).redirect('/home');
+  }
+});
+
 io.use((socket, next) => {
   // Use the session middleware to initialize the session
   sessionMiddleware(socket.request, {}, next);
 });
 
+const connectedSockets = new Map();
+
 io.on("connection", (socket) => {
+  // console.log("Socket connected:", socket.id);
+
+  connectedSockets.set(socket.id, socket);
+
+  const gameManager = new GameManager(socket, io, connectedSockets);
+
+  socket.on("lobbyData", (data) => {
+    // console.log("Received lobbyData from client: ", data);
+    gameManager.storeData(data);
+  });
 
   socket.on("submitAnswer", (data) => {
-    const submittedAnswer = parseInt(data.answer, 10);
-    const submittedQuestion = parseInt(data.question, 10);
-// console.log(submittedAnswer, submittedQuestion)
-    if (submittedAnswer === submittedQuestion) {
-      socket.emit("answerResult", { correctAnswer: true });
-    } else {
-      socket.emit("answerResult", { correctAnswer: false });
-    }
+    gameManager.submitAnswer(data, socket);
   });
 
   socket.on("voteSkip", (lobby) => {
@@ -117,7 +139,7 @@ io.on("connection", (socket) => {
     // console.log("Received voteStay from client with lobby data:", lobby);
     waitingRoomManager.voteStay(io, socket, lobby);
   });
-  
+
   // Handle a user joining the waiting room
   socket.on("joinWaitingRoom", (data) => {
     const lobby = data.lobby;

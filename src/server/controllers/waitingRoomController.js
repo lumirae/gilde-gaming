@@ -228,7 +228,7 @@ class WaitingRoomManager {
       // Check if more than half of the players voted to skip
       if (skipVotesI > lobby.players.length / 2) {
         // Set the remaining time to 5 seconds
-        lobby.remainingTime = 50000; // 5 seconds in milliseconds
+        lobby.remainingTime = 5000; // 5 seconds in milliseconds
         // Clear the existing timer and start a new one
         clearInterval(lobby.timer);
 

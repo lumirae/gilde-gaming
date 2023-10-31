@@ -24,6 +24,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const gameExplanation1 = document.getElementById("gameExplanation1");
   const gameExplanation2 = document.getElementById("gameExplanation2");
   const gameExplanation3 = document.getElementById("gameExplanation3");
+  const leaderRank = document.getElementById("leaderRank");
+  const globalLeaderboard = document.getElementById("globalLeaderboard");
+  const closeLeaderboardButton = document.getElementById("closeLeaderboardButton");
+  const leaderUsername = document.getElementById("leaderUsername");
+  const leaderWins = document.getElementById("leaderWins");
+  const chatInput = document.getElementById("input");
+  const sumInput = document.getElementById("sumfield");
+  const secret = document.getElementById("secret");
 
   let userLanguage; // Declare userLanguage variable outside of the fetch callback
 
@@ -35,65 +43,147 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         // console.log("JSON data loaded:", data);
-        pageTitle.textContent = data.pageTitle;
-        playButton.textContent = data.playButton;
-        vote.textContent = data.vote;
-        settingsButton.textContent = data.settingsButton;
-        scoreboard.textContent = data.scoreboard;
-        disconnectButton.textContent = data.disconnectButton;
-        logout.textContent = data.logout;
-        gameOptions.textContent = data.gameOptions;
-        sound.textContent = data.sound;
-        music.textContent = data.music;
-        easy.textContent = data.easy;
-        medium.textContent = data.medium;
-        hard.textContent = data.hard;
-        difficultyText.textContent = data.difficultyText;
-        waitingPlayer.textContent = data.waitingPlayer;
-        skipVotesText.textContent = data.skipVotesText;
-        stayVotesText.textContent = data.stayVotesText;
-        voteSkip.textContent = data.voteSkip;
-        voteStay.textContent = data.voteStay;
-        languageSelectorText.textContent = data.languageSelectorText;
-        gameExplanation.textContent = data.gameExplanation;
-        gameExplanation1.textContent = data.gameExplanation1;
-        gameExplanation2.textContent = data.gameExplanation2;
-        gameExplanation3.textContent = data.gameExplanation3;
+        if (pageTitle) {
+          pageTitle.textContent = data.pageTitle;
+        }
+        if (playButton) {
+          playButton.textContent = data.playButton;
+        }
+        if (vote) {
+          vote.textContent = data.vote;
+        }
+        if (settingsButton) {
+          settingsButton.textContent = data.settingsButton;
+        }
+        if (scoreboard) {
+          scoreboard.textContent = data.scoreboard;
+        }
+        if (disconnectButton) {
+          disconnectButton.textContent = data.disconnectButton;
+        }
+        if (logout) {
+          logout.textContent = data.logout;
+        }
+        if (gameOptions) {
+          gameOptions.textContent = data.gameOptions;
+        }
+        if (sound) {
+          sound.textContent = data.sound;
+        }
+        if (music) {
+          music.textContent = data.music;
+        }
+        if (easy) {
+          easy.textContent = data.easy;
+        }
+        if (medium) {
+          medium.textContent = data.medium;
+        }
+        if (hard) {
+          hard.textContent = data.hard;
+        }
+        if (difficultyText) {
+          difficultyText.textContent = data.difficultyText;
+        }
+        if (waitingPlayer) {
+          waitingPlayer.textContent = data.waitingPlayer;
+        }
+        if (skipVotesText) {
+          skipVotesText.textContent = data.skipVotesText;
+        }
+        if (stayVotesText) {
+          stayVotesText.textContent = data.stayVotesText;
+        }
+        if (voteSkip) {
+          voteSkip.textContent = data.voteSkip;
+        }
+        if (voteStay) {
+          voteStay.textContent = data.voteStay;
+        }
+        if (languageSelectorText) {
+          languageSelectorText.textContent = data.languageSelectorText;
+        }
+        if (gameExplanation) {
+          gameExplanation.textContent = data.gameExplanation;
+        }
+        if (gameExplanation1) {
+          gameExplanation1.textContent = data.gameExplanation1;
+        }
+        if (gameExplanation2) {
+          gameExplanation2.textContent = data.gameExplanation2;
+        }
+        if (gameExplanation3) {
+          gameExplanation3.textContent = data.gameExplanation3;
+        }
+        if (globalLeaderboard) {
+          globalLeaderboard.textContent = data.globalLeaderboard;
+        }
+        if (chatInput) {
+          document.getElementsByName("chatInput")[0].placeholder = data.chatInput;
+        }
+        if (sumInput) {
+          document.getElementsByName("sumInput")[0].placeholder = data.sumInput;
+        }
+        if (leaderRank) {
+          leaderRank.textContent = data.leaderRank;
+        }
+        if (closeLeaderboardButton) {
+          closeLeaderboardButton.textContent = data.closeLeaderboardButton;
+        }
+        if (leaderUsername) {
+          leaderUsername.textContent = data.leaderUsername;
+        }
+        if (leaderWins) {
+          leaderWins.textContent = data.leaderWins;
+        }
+        if (secret) {
+          secret.textContent = data.secret;
+        }
       })
       .catch((error) =>
         console.error(`Error loading /language/${language}: ${error}`)
       );
   }
-
-  // Event listener for language selector change
-  languageSelector.addEventListener("change", function () {
-    const selectedLanguage = languageSelector.value;
-    // console.log(`Selected language: ${selectedLanguage}`);
-    loadLanguage(selectedLanguage);
-  });
-
+  try {
+    // Event listener for language selector change
+    languageSelector.addEventListener("change", function () {
+      const selectedLanguage = languageSelector.value;
+      // console.log(`Selected language: ${selectedLanguage}`);
+      loadLanguage(selectedLanguage);
+    });
+  } catch {
+    ("halloe");
+  }
   // Load the user's selected language when the page loads
-  fetch('/language/get-language')
+  fetch("/language/get-language")
     .then((response) => response.json())
     .then((data) => {
       userLanguage = data.language; // Assign the selected language to userLanguage
       if (userLanguage) {
-        languageSelector.value = userLanguage;
+        try {
+          languageSelector.value = userLanguage;
+        } catch {
+          ("HALLOE");
+        }
+
         // console.log('User Language:', userLanguage);
         // Load the initial language set by user
-        loadLanguage(userLanguage || 'nl');
+        loadLanguage(userLanguage || "nl");
       }
     });
-
-  // Save the selected language when the user changes it
-  languageSelector.addEventListener('change', () => {
-    const selectedLanguage = languageSelector.value;
-    fetch('/language/save-language', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ language: selectedLanguage }),
+  try {
+    // Save the selected language when the user changes it
+    languageSelector.addEventListener("change", () => {
+      const selectedLanguage = languageSelector.value;
+      fetch("/language/save-language", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ language: selectedLanguage }),
+      });
     });
-  });
+  } catch {
+    ("halloeeeee");
+  }
 });

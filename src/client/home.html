@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- <audio src="/public/sounds/homeMenu.wav" autoplay loop ></audio> -->
     <title id="pageTitle">Apen Race</title>
     <link rel="stylesheet" type="text/css" href="public\style.css" />
     <link rel="stylesheet" type="text/css" href="src\client\style.css" />
@@ -20,12 +21,12 @@
     </style>
   </head>
   <body>
-    <audio
-      id="backgroundMusic"
-      src="/public/sounds/homeMenu.wav"
-      loop
-      autoplay
-    ></audio>
+    <audio id="homeMusic" loop autoplay>
+      <source src="/public/sounds/homeMenu.mp3" type="audio/mp3" />
+      <source src="/public/sounds/homeMenu.ogg" type="audio/ogg" />
+      <source src="/public/sounds/homeMenu.wav" type="audio/wav" />
+      Your browser does not support the audio element.
+    </audio>
     <div id="waitingPopup" class="popup">
       <p id="lobbyId"></p>
       <div class="popup-content">
@@ -53,21 +54,21 @@
       <i class="fa-solid fa-question"></i>
       <div id="infoHoverContent">
         <p id="gameExplanation">
-          Het doel van het spel is om als eerste bij de top te komen van de
-          boom.
+          doel: het doel van het spel is om als eerste bij de top te komen van
+          de boom.
         </p>
         <p id="gameExplanation1">
-          Game: je krijgt in het midden van je scherm vragen die te maken hebben
+          Spel: je krijgt in het midden van je scherm vragen die te maken hebben
           met rekenen, elke vraag die je goed hebt ga je dus een stukje omhoog
           van de boom, maar kijk uit als je een fout maakt ga je weer omlaag.
         </p>
         <p id="gameExplanation2">
-          De vragen hebben 3 moeilijksheidgraden die je in de settings kunt
-          aanpassen.
+          Moeilijkheid: De vragen hebben 3 moeilijksheidgraden die je in de
+          settings kunt aanpassen.
         </p>
         <p id="gameExplanation3">
-          De vragen bevatten: optellen, aftrekken, multiplicatie, delen,
-          quadraten en wortels.
+          De sommen: de vragen bevatten: optellen, aftrekken, multiplicatie,
+          delen,quadraten en wortels.
         </p>
       </div>
     </div>
@@ -79,11 +80,11 @@
       <button id="settingsButton" class="button-background">
         <b>Opties</b>
       </button>
-      <a href="#"
-        ><button id="scoreboard" class="button-background">
-          <b>scoreboard</b>
-        </button></a
-      >
+
+      <button id="scoreboard" class="button-background">
+        <b>scoreboard</b>
+      </button>
+
       <button id="logout" class="logout-button button-background">
         <b>uitloggen</b>
       </button>
@@ -108,32 +109,38 @@
         </div>
         <div class="option">
           <label id="music" for="muziek">Muziek:</label>
-          <span class="percentage">50%</span>
+          <span class="percentage" id="volumeDisplay">100%</span>
           <input
             type="range"
             min="0"
             max="100"
-            value="50"
+            value="100"
             class="slider"
             id="muziek"
             name="muziek"
+            oninput="updateVolume()"
           />
         </div>
-        <script>
-          // Add this JavaScript code to your page
-          document.addEventListener("DOMContentLoaded", function () {
-            // Get all the input elements
-            const sliders = document.querySelectorAll(".slider");
-            const percentages = document.querySelectorAll(".percentage");
 
-            // Add event listeners to each input element
-            sliders.forEach((slider, index) => {
-              slider.addEventListener("input", () => {
-                // Update the corresponding percentage value
-                percentages[index].textContent = `${slider.value}%`;
-              });
-            });
-          });
+        <script>
+          var audio = document.getElementById("homeMusic");
+          var volumeSlider = document.getElementById("muziek");
+
+          if (localStorage.getItem("volume")) {
+            var storedVolume = localStorage.getItem("volume");
+            volumeSlider.value = storedVolume;
+            audio.volume = storedVolume / 100;
+            document.getElementById("volumeDisplay").textContent =
+              storedVolume + "%";
+          }
+
+          function updateVolume() {
+            var volume = volumeSlider.value;
+            document.getElementById("volumeDisplay").textContent = volume + "%";
+            audio.volume = volume / 100;
+
+            localStorage.setItem("volume", volume);
+          }
         </script>
 
         <div id="option" class="option">
@@ -162,12 +169,30 @@
       <div></div>
     </div>
 
+    <!--Leaderboard-->
+    <div id="leaderboardPopup" class="leaderboardPopup">
+      <div class="popup-content">
+        <h1 id="globalLeaderboard">Globaal Leaderboard</h1>
+        <div class="parent">
+          <div id="leaderRank" class="child-1">rank</div>
+          <div id="leaderRankContent"></div>
+          <div id="leaderUsername" class="child-2">username</div>
+          <div id="leaderUsernameContent"></div>
+          <div id="leaderWins" class="child-3">Wins</div>
+          <div id="leaderWinsContent"></div>
+        </div>
+        <div id="leaderboardContainer"></div>
+        <button id="closeLeaderboardButton">Sluit scorebord</button>
+      </div>
+    </div>
+
     <!-- Chat -->
     <div class="chat" id="chat">
       <ul id="messages"></ul>
       <form id="form" action="">
         <input
           id="input"
+          name="chatInput"
           autocomplete="off"
           maxlength="255"
           placeholder="Typ hier om te chatten . . ."
@@ -179,8 +204,8 @@
       <script src="/src/client/js/settings.js"></script>
       <script src="/src/client/js/language.js"></script>
       <script src="/src/client/js/difficulty.js"></script>
-      <script src="../src/client/js/audioControls.js"></script>
-      <script src="../src/client/js/sliderControls.js"></script>
+      <script src="/src/client/js/leaderboard.js"></script>
+      <script src="/src/client/js/volume.js"></script>
 
       <script>
         // logout
@@ -222,5 +247,6 @@
         });
       </script>
     </div>
+    <div id="secret"></div>
   </body>
 </html>
